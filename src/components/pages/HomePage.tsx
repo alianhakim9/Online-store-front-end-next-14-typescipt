@@ -8,6 +8,7 @@ import ProductSkeletonCard from "../guest/skeletons/ProductSkeletonCard";
 import { Separator } from "../ui/separator";
 import { useSession } from "next-auth/react";
 import { ScrollArea } from "../ui/scroll-area";
+import EmptyState from "../guest/EmptyState";
 
 interface IHomepage {
   products: BaseResponse<Product[]>;
@@ -17,7 +18,7 @@ interface IHomepage {
 const HomePage = ({ products, categories }: IHomepage) => {
   const { data: session } = useSession();
 
-  if (!products) {
+  if (!products || !categories) {
     let skeletons = [];
     for (let i = 0; i < 10; i++) {
       skeletons.push(<ProductSkeletonCard key={i} />);
@@ -31,6 +32,9 @@ const HomePage = ({ products, categories }: IHomepage) => {
         <div className="flex flex-col gap-1 min-w-[250px]">
           <h4 className="text-1xl font-semibold">Categories</h4>
           <div>
+            {categories.data.length === 0 && (
+              <EmptyState title="Category still empty" mode="text" />
+            )}
             {categories.data.map((item) => (
               <p key={item.id} className="text-sm ml-2">
                 {item.name}
@@ -43,6 +47,9 @@ const HomePage = ({ products, categories }: IHomepage) => {
       <ScrollArea className="h-[100vh]">
         <div className="flex-1 flex flex-col " id="content">
           <Banner />
+          {categories.data.length === 0 && (
+            <EmptyState title="Products still empty" mode="graphic" />
+          )}
           <div className="my-4 flex gap-4">
             <div>
               <div className="grid grid-cols-5 gap-2">
