@@ -23,7 +23,7 @@ const HomePage = ({ products, categories }: IHomepage) => {
     for (let i = 0; i < 10; i++) {
       skeletons.push(<ProductSkeletonCard key={i} />);
     }
-    return <div className="grid grid-cols-5 gap-4">{skeletons}</div>;
+    return <div className="grid grid-cols-5 gap-4 container">{skeletons}</div>;
   }
 
   return (
