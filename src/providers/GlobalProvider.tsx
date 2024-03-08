@@ -2,10 +2,9 @@
 
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import { CartContext } from "@/context/CartContext";
-import { hideLoading, setCarts } from "@/redux/slices/cartSlice";
-import { Cart } from "@/types/local";
-import { API_BASE_URL } from "@/utils/constants";
-import axios, { AxiosError, AxiosResponse } from "axios";
+import { useGetCartByUserIdQuery } from "@/redux/rtk/cartApi";
+import { setCartFromDb } from "@/redux/slices/carts_slice";
+import { CartItem, Carts } from "@/types/cart";
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -19,30 +18,36 @@ interface Props {
 
 const GlobalProvider = ({ session, children }: Props) => {
   const dispatch = useDispatch();
-  const [cart, setCart] = useState<Cart[]>();
+  const userId = session?.user.sub;
+  const [cart, setCart] = useState<Carts[]>();
+  const { data } = useGetCartByUserIdQuery(userId as string);
 
   useEffect(() => {
-    dispatch(hideLoading());
-    const userId = session?.user.sub;
-    if (userId) {
-      axios
-        .get(`${API_BASE_URL}/api/carts?populate=deep&filters[user]=${userId}?`)
-        .then((response: AxiosResponse) => {
-          const items = response.data.data;
-          dispatch(setCarts(items));
+    if (userId && data) {
+      const cartItems = data.data.map((item: any) => {
+        let cartItem: CartItem = {
+          id: item.id,
+          product: item.product,
+          quantity: item.quantity,
+          subtotal: item.subTotal,
+        };
+        return cartItem;
+      });
+      dispatch(
+        setCartFromDb({
+          cartItems,
         })
-        .catch((err: AxiosError) => {
-          console.log(err);
-        });
+      );
+    } else {
+      // setCartToState();
     }
-    setCartToState();
-  }, [dispatch, session?.user.sub]);
+  }, [data, dispatch, session?.user.sub, userId]);
 
   const setCartToState = () => {
-    if (localStorage.getItem("cart")) {
+    if (localStorage.getItem("carts")) {
       setCart(
-        localStorage.getItem("cart")
-          ? JSON.parse(localStorage.getItem("cart")!)
+        localStorage.getItem("carts")
+          ? JSON.parse(localStorage.getItem("carts")!)
           : []
       );
     }

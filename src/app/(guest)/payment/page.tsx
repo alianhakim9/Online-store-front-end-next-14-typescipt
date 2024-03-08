@@ -1,12 +1,8 @@
 "use client";
 
-import ImageLoad from "@/components/guest/ImageLoad";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { setTransactionToken } from "@/redux/slices/paymentSlice";
 import { RootState } from "@/redux/store";
-import { PRODUCT_IMG_PATH } from "@/utils/constants";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,9 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 export default function Page() {
   const dispatch = useDispatch();
   const { transactionToken } = useSelector((state: RootState) => state.payment);
-  const { cartItems, totalPrice, quantity } = useSelector(
-    (state: RootState) => state.cart
-  );
+
   const [isPay, setIsPay] = useState(false);
 
   useEffect(() => {
@@ -77,9 +71,9 @@ export default function Page() {
             <Separator />
           </div>
         ))} */}
-        <p className="font-semibold mt-2 text-sm">
+        {/* <p className="font-semibold mt-2 text-sm">
           Total should pay : Rp.{totalPrice}
-        </p>
+        </p> */}
         <Button
           onClick={() => {
             dispatch(setTransactionToken(transactionToken));

@@ -20,7 +20,7 @@ export function showSonnerToast(message: string, description?: string) {
 }
 
 export function onSignOut(callbackUrl?: string) {
-  Cookies.remove("cart");
+  Cookies.remove("carts");
   return signOut({ callbackUrl, redirect: true });
 }
 

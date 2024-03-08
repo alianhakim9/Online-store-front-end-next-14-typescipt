@@ -1,6 +1,6 @@
 "use client";
 
-import { addQuantity, reduceQuantity } from "@/redux/slices/cartSlice";
+import { addQuantity, reduceQuantity } from "@/redux/slices/carts_slice";
 import { useDispatch } from "react-redux";
 import { Button } from "../ui/button";
 
@@ -12,8 +12,10 @@ interface IQuantityBtn {
   disableIncreaseBtn?: boolean;
   setInitialQuantity?: () => void;
   fromCart?: boolean;
-  productId?: string;
   stock?: number;
+  cartId?: string;
+  userId?: string;
+  productId?: string;
 }
 
 const QuantityButton = ({
@@ -21,17 +23,20 @@ const QuantityButton = ({
   onIncrease,
   quantity,
   fromCart,
-  productId,
   stock,
+  productId,
+  userId,
+  cartId,
 }: IQuantityBtn) => {
   const dispatch = useDispatch();
 
   const handleAddQuantity = () => {
-    if (fromCart && productId) {
+    if (fromCart) {
       dispatch(
         addQuantity({
-          id: productId,
-          quantity: quantity,
+          userId,
+          productId,
+          cartId,
         })
       );
     } else {
@@ -43,8 +48,9 @@ const QuantityButton = ({
     if (fromCart && productId) {
       dispatch(
         reduceQuantity({
-          id: productId,
-          quantity: quantity,
+          userId,
+          productId,
+          cartId,
         })
       );
     } else {

@@ -30,6 +30,7 @@ export type CartItem = {
   stock: number;
   subTotal: number;
   weight: number;
+  productId: string;
 };
 
 export type Cart = {

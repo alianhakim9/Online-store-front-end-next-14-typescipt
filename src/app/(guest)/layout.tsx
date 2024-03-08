@@ -23,7 +23,7 @@ export default async function RootLayout({
     <div className={`flex flex-col justify-between h-screen`}>
       <Navbar />
       <Suspense fallback={<Loading />}>
-        <div className="flex-1 mt-32 mb-24">{children}</div>
+        <div className="flex-1 mt-32 mb-24 container">{children}</div>
       </Suspense>
       <Footer />
     </div>

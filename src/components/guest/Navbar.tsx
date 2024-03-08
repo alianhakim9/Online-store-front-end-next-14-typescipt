@@ -24,7 +24,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 const Navbar = () => {
   const router = useRouter();
   const { data: session } = useSession();
-  const { loading, cartItems } = useSelector((state: RootState) => state.cart);
+  const { cartItems } = useSelector((state: RootState) => state.carts);
 
   return (
     <div className="bg-white border-b border-gray-200 w-full top-0 fixed z-50">
@@ -45,7 +45,9 @@ const Navbar = () => {
           >
             <BiCart size={28} />
             <Badge variant="default">
-              {loading ? "0" : cartItems?.reduce((a, c) => a + 1, 0)}
+              {cartItems.length === 0
+                ? 0
+                : cartItems.reduce((a, c) => a + 1, 0)}
             </Badge>
           </Button>
           {/* render if is logged in true */}

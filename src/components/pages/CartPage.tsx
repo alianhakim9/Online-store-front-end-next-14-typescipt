@@ -2,7 +2,7 @@
 
 import ImageLoad from "@/components/guest/ImageLoad";
 import { Button } from "@/components/ui/button";
-import { removeFromCart, setCarts } from "@/redux/slices/cartSlice";
+import { removeCartItem } from "@/redux/slices/carts_slice";
 import { setTransactionToken } from "@/redux/slices/paymentSlice";
 import { RootState } from "@/redux/store";
 import { API_BASE_URL } from "@/utils/constants";
@@ -36,10 +36,13 @@ import {
 
 const CartPage = () => {
   const dispatch = useDispatch();
-  const { loading, cartItems, totalPrice, subTotal, quantity } = useSelector(
-    (state: RootState) => state.cart
+  const [open, setOpen] = useState(false);
+  const { cartItems, totalPrice } = useSelector(
+    (state: RootState) => state.carts
   );
   const { data: session } = useSession();
+  const userId = session?.user.sub;
+
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -61,24 +64,36 @@ const CartPage = () => {
       .finally(() => setIsLoading(false));
   };
 
+  const handleRemoveCartItem = (cartId?: string, productId?: string) => {
+    const data = {
+      userId,
+      productId,
+    };
+    dispatch(
+      removeCartItem({
+        ...data,
+        cartId,
+      })
+    );
+    setOpen(false);
+  };
+
   return (
     <div>
       <h3 className="text-3xl mb-5 font-semibold text-gray-600 text-center container">
         Shopping Cart
       </h3>
-      {loading ? (
-        <p>Loading...</p>
-      ) : cartItems.length === 0 ? (
+      {cartItems.length === 0 ? (
         <div className="w-full flex items-center justify-center flex-col">
           <ImageLoad
             alt="empty-cart"
             src="/images/empty-cart.png"
-            className="h-96 w-96"
+            className="h-80 w-80"
           />
         </div>
       ) : (
         <div>
-          <ScrollArea className="h-[40]">
+          <ScrollArea className="h-[50vh]">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -99,8 +114,8 @@ const CartPage = () => {
                       <TableCell className="max-w-[100px]">
                         <div className="h-[100px] w-[100px] relative">
                           <ImageLoad
-                            src={`${API_BASE_URL}${item.image}`}
-                            alt={item.name}
+                            src={`${API_BASE_URL}${item.product.images[0].url}`}
+                            alt={item.product.name}
                             className="w-24 h-24"
                           />
                         </div>
@@ -108,28 +123,28 @@ const CartPage = () => {
                       <TableCell>
                         <div className="flex gap-2">
                           <div className="flex flex-col gap-1">
-                            <Link href={`/products/${item.id}`}>
-                              {item.name}
+                            <Link href={`/products/${item.product.id}`}>
+                              {item.product.name}
                             </Link>
                           </div>
                         </div>
                       </TableCell>
                       <TableCell>
-                        {convertToRupiah(Number(item.price))}
+                        {convertToRupiah(Number(item.product.price))}
                       </TableCell>
                       <TableCell>
                         <QuantityButton
-                          quantity={quantity[i].count}
+                          quantity={item.quantity}
                           fromCart
-                          productId={item.id}
-                          stock={item.stock}
+                          stock={item.product.stock}
+                          productId={item.product.id}
+                          cartId={item.id}
+                          userId={userId}
                         />
                       </TableCell>
+                      <TableCell>{convertToRupiah(item.subtotal)}</TableCell>
                       <TableCell>
-                        {convertToRupiah(subTotal[i].count)}
-                      </TableCell>
-                      <TableCell>
-                        <Dialog>
+                        <Dialog open={open} onOpenChange={setOpen}>
                           <DialogTrigger>
                             <p className="text-red-500 font-semibold">Delete</p>
                           </DialogTrigger>
@@ -145,9 +160,12 @@ const CartPage = () => {
                             <DialogFooter>
                               <Button
                                 variant="destructive"
-                                onClick={() =>
-                                  dispatch(removeFromCart(item.id))
-                                }
+                                onClick={() => {
+                                  handleRemoveCartItem(
+                                    item.id,
+                                    item.product.id
+                                  );
+                                }}
                               >
                                 Remove
                               </Button>

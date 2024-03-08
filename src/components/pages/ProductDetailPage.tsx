@@ -2,12 +2,11 @@
 
 import QuantityButton from "@/components/guest/QuantityButton";
 import { Button } from "@/components/ui/button";
-import { addToCart } from "@/redux/slices/cartSlice";
 import { API_BASE_URL } from "@/utils/constants";
 import { useState } from "react";
 import { BiCart } from "react-icons/bi";
 import { useDispatch } from "react-redux";
-
+import { Product } from "@/types/local";
 import { BaseResponse } from "@/types/responses";
 import { convertToRupiah, showSonnerToast } from "@/utils/helper";
 import { useSession } from "next-auth/react";
@@ -20,7 +19,6 @@ import {
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import ImageLoad from "../guest/ImageLoad";
-import { Product } from "@/types/local";
 
 interface IProductDetailPage {
   product: BaseResponse<Product>;
@@ -37,7 +35,7 @@ const ProductDetailPage = ({ product }: IProductDetailPage) => {
   const handleAddToCart = async () => {
     showSonnerToast("Product added to cart", data.name);
     const item = {
-      id: product.data.id,
+      id: data.id,
       name: data.name,
       image: data.images[0].url,
       price: data.price,
@@ -45,13 +43,8 @@ const ProductDetailPage = ({ product }: IProductDetailPage) => {
       stock: data.stock,
       subTotal: Number(data.price) * quantity,
       weight: data.weight,
+      productId: data.id,
     };
-    dispatch(
-      addToCart({
-        item,
-        userId: session?.user.sub,
-      })
-    );
   };
 
   return (

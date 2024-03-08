@@ -3,7 +3,7 @@ import AuthForm from "@/components/shared/AuthForm";
 
 export default function SignUp() {
   return (
-    <div className="grid grid-cols-2 justify-between items-center container">
+    <div className="grid grid-cols-2 justify-between items-center">
       <div>
         <div className="mb-5">
           <h3 className="text-lime-950 font-bold text-5xl">

@@ -17,14 +17,14 @@ const Banner = () => {
       }}
       centeredSlides
       spaceBetween={30}
-      className="max-w-screen-2xl "
+      className="w-full"
     >
       {carousels.map((carousel, index) => (
         <SwiperSlide key={index}>
           <ImageLoad
-            className="h-[500px] w-screen"
+            className="h-[500px] w-full"
             src={carousel}
-            alt="banner-img"
+            alt="banner-img rounded-none"
           />
         </SwiperSlide>
       ))}

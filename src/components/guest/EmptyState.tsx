@@ -13,7 +13,7 @@ const EmptyState = ({ title, mode }: IEmptyState) => {
           <ImageLoad
             src="/images/empty-state.png"
             alt="empty-state"
-            className="h-80 w-80"
+            className="h-52 w-52"
           />
           <p>{title}</p>
         </div>

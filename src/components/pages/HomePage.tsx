@@ -23,51 +23,44 @@ const HomePage = ({ products, categories }: IHomepage) => {
     for (let i = 0; i < 10; i++) {
       skeletons.push(<ProductSkeletonCard key={i} />);
     }
-    return <div className="grid grid-cols-5 gap-4 container">{skeletons}</div>;
+    return <div className="grid grid-cols-5 gap-4">{skeletons}</div>;
   }
 
   return (
-    <div className="flex gap-5 px-10">
-      <div className="flex gap-8" id="sidebar">
-        <div className="flex flex-col gap-1 min-w-[250px]">
-          <h4 className="text-1xl font-semibold">Categories</h4>
-          <div>
-            {categories.data.length === 0 && (
-              <EmptyState title="Category still empty" mode="text" />
-            )}
-            {categories.data.map((item) => (
-              <p key={item.id} className="text-sm ml-2">
-                {item.name}
-              </p>
+    <div>
+      <div>
+        <Banner />
+        <div className="my-4 flex gap-4">
+          <div className="flex gap-8">
+            <div className="flex flex-col gap-1 min-w-[250px]">
+              <h4 className="text-1xl font-semibold">Categories</h4>
+              <div>
+                {categories.data.length === 0 && (
+                  <EmptyState title="Category still empty" mode="text" />
+                )}
+                <ul>
+                  {categories.data.map((item) => (
+                    <li key={item.id} className="list-disc list-inside text-sm">
+                      {item.name}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            <Separator orientation="vertical" />
+          </div>
+          {products.data.length === 0 && (
+            <div className="w-full">
+              <EmptyState title="Products still empty" mode="graphic" />
+            </div>
+          )}
+          <div className="grid grid-cols-5 gap-2">
+            {products.data.map((item) => (
+              <ProductCard key={item.name} product={item} session={session} />
             ))}
           </div>
         </div>
-        <Separator orientation="vertical" />
       </div>
-      <ScrollArea className="h-[100vh]">
-        <div className="flex-1 flex flex-col " id="content">
-          <Banner />
-          {categories.data.length === 0 && (
-            <EmptyState title="Products still empty" mode="graphic" />
-          )}
-          <div className="my-4 flex gap-4">
-            <div>
-              <div className="grid grid-cols-5 gap-2">
-                {products.data.map((item) => (
-                  <ProductCard
-                    key={item.id}
-                    product={{
-                      ...item,
-                      id: item.id.toString(),
-                    }}
-                    session={session}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </ScrollArea>
     </div>
   );
 };
