@@ -52,3 +52,24 @@ export function convertToRupiah(price: number): string {
     minimumFractionDigits: 0,
   }).format(price);
 }
+
+export function splitFullName(fullName?: string | null | undefined): {
+  firstName: string;
+  lastName: string;
+} {
+  if (fullName) {
+    const nameParts: string[] = fullName.split(" ");
+    const firstName: string = nameParts[0];
+    const lastName: string = nameParts.slice(1).join(" ");
+
+    return {
+      firstName: firstName,
+      lastName: lastName,
+    };
+  } else {
+    return {
+      firstName: "",
+      lastName: "",
+    };
+  }
+}

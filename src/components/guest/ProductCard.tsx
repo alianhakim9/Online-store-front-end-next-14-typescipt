@@ -30,7 +30,8 @@ const ProductCard = ({ product, session }: IProductProps) => {
   const cartItems = useSelector((state: RootState) => state.carts.cartItems);
 
   const handleAddToCart = useCallback(() => {
-    const userId = session?.user.sub;
+    const userId = session?.user.userId.toString();
+    // const userId = session?.user.sub;
     const cartItem: CartItem = {
       product: product,
       quantity: 1,
@@ -53,7 +54,7 @@ const ProductCard = ({ product, session }: IProductProps) => {
       }
       showSonnerToast("Product added to cart", cartItem.product.name);
     }
-  }, [cartItems, dispatch, product, session?.user.sub]);
+  }, [cartItems, dispatch, product, session?.user.userId]);
 
   return (
     <Card className="flex flex-col justify-between">

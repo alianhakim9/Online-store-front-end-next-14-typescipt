@@ -3,15 +3,17 @@
 import ImageLoad from "@/components/guest/ImageLoad";
 import { Button } from "@/components/ui/button";
 import { removeCartItem } from "@/redux/slices/carts_slice";
-import { setTransactionToken } from "@/redux/slices/paymentSlice";
 import { RootState } from "@/redux/store";
 import { API_BASE_URL } from "@/utils/constants";
-import { convertToRupiah, showToast } from "@/utils/helper";
-import axios, { AxiosError, AxiosResponse } from "axios";
+import {
+  convertToRupiah,
+  showSonnerToast,
+  splitFullName,
+} from "@/utils/helper";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import QuantityButton from "../guest/QuantityButton";
 import LoadingButton from "../shared/LoadingButton";
@@ -33,6 +35,8 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { setTransactionToken } from "@/redux/slices/paymentSlice";
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -41,27 +45,34 @@ const CartPage = () => {
     (state: RootState) => state.carts
   );
   const { data: session } = useSession();
-  const userId = session?.user.sub;
+  const userId = session?.user.userId.toString();
 
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleCheckout = async () => {
     setIsLoading(true);
-    await axios
-      .post("/api/payment-gateway", {
-        cartItems,
-        totalPrice,
+    if (session) {
+      const data = {
+        first_name: splitFullName(session.user.name).firstName,
+        last_name: splitFullName(session.user.name).lastName,
         email: session?.user.email,
-      })
-      .then((response: AxiosResponse) => {
-        dispatch(setTransactionToken(response.data));
-        router.push("/payment");
-      })
-      .catch((err: AxiosError) => {
-        showToast(err.message, "error");
-      })
-      .finally(() => setIsLoading(false));
+        phone: "08943123989",
+        total_price: totalPrice,
+      };
+      await axios
+        .post(`${API_BASE_URL}/api/payment-gateway`, data)
+        .then((response: AxiosResponse) => {
+          dispatch(setTransactionToken(response.data));
+          router.push("/payment");
+        })
+        .catch((err: AxiosError) => {
+          showSonnerToast("Error while checkout", err.message);
+        })
+        .finally(() => setIsLoading(false));
+    } else {
+      setIsLoading(false);
+    }
   };
 
   const handleRemoveCartItem = (cartId?: string, productId?: string) => {

@@ -1,15 +1,25 @@
 "use client";
 
+import ImageLoad from "@/components/guest/ImageLoad";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 import { setTransactionToken } from "@/redux/slices/paymentSlice";
 import { RootState } from "@/redux/store";
+import { CartItem } from "@/types/cart";
+import { API_BASE_URL } from "@/utils/constants";
+import { convertToRupiah } from "@/utils/helper";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Page() {
   const dispatch = useDispatch();
-  const { transactionToken } = useSelector((state: RootState) => state.payment);
+  const transactionToken = useSelector(
+    (state: RootState) => state.payment.transactionToken
+  );
+  const cartItems = useSelector((state: RootState) => state.carts.cartItems);
+  const totalPrice = useSelector((state: RootState) => state.carts.totalPrice);
 
   const [isPay, setIsPay] = useState(false);
 
@@ -50,30 +60,32 @@ export default function Page() {
           Back to cart
         </Link>
         <h3 className="text-2xl font-semibold">Payment Detail</h3>
-        {/* {cartItems.map((cart, index) => (
+        {cartItems.map((cart: CartItem, index) => (
           <div key={index}>
             <ScrollArea className="max-h-[500px]">
               <div className="flex gap-4 mt-4">
                 <div>
                   <ImageLoad
-                    src={`${PRODUCT_IMG_PATH}/${cart.images[0]}`}
-                    alt={cart.name}
+                    src={`${API_BASE_URL}${cart.product.images[0].formats.thumbnail.url}`}
+                    alt={cart.product.name}
                     className="h-24 w-24"
                   />
                 </div>
                 <div>
-                  <h4 className="text-2xl">{cart.name}</h4>
-                  <p className="text-sm">Product price : Rp. {cart.price}</p>
-                  <p className="text-sm">Quantity : {quantity[index].count}</p>
+                  <h4 className="text-2xl">{cart.product.name}</h4>
+                  <p className="text-sm">
+                    {convertToRupiah(Number(cart.product.price))}
+                  </p>
+                  <p className="text-sm">Quantity : {cart.quantity}</p>
                 </div>
               </div>
             </ScrollArea>
             <Separator />
           </div>
-        ))} */}
-        {/* <p className="font-semibold mt-2 text-sm">
-          Total should pay : Rp.{totalPrice}
-        </p> */}
+        ))}
+        <p className="font-semibold mt-2 text-sm">
+          Total should pay : {convertToRupiah(totalPrice)}
+        </p>
         <Button
           onClick={() => {
             dispatch(setTransactionToken(transactionToken));

@@ -3,6 +3,7 @@
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import { CartContext } from "@/context/CartContext";
 import { useGetCartByUserIdQuery } from "@/redux/rtk/cartApi";
+import { getUserProfile } from "@/redux/rtk/userApi";
 import { setCartFromDb } from "@/redux/slices/carts_slice";
 import { CartItem, Carts } from "@/types/cart";
 import { Session } from "next-auth";
@@ -18,7 +19,8 @@ interface Props {
 
 const GlobalProvider = ({ session, children }: Props) => {
   const dispatch = useDispatch();
-  const userId = session?.user.sub;
+  // const userId = session?.user.sub;
+  const userId = session?.user.userId.toString();
   const [cart, setCart] = useState<Carts[]>();
   const { data } = useGetCartByUserIdQuery(userId as string);
 
@@ -38,10 +40,8 @@ const GlobalProvider = ({ session, children }: Props) => {
           cartItems,
         })
       );
-    } else {
-      // setCartToState();
     }
-  }, [data, dispatch, session?.user.sub, userId]);
+  }, [data, dispatch, session, userId]);
 
   const setCartToState = () => {
     if (localStorage.getItem("carts")) {

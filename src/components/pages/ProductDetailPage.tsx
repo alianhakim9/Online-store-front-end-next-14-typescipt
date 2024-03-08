@@ -2,26 +2,29 @@
 
 import QuantityButton from "@/components/guest/QuantityButton";
 import { Button } from "@/components/ui/button";
-import { API_BASE_URL } from "@/utils/constants";
-import { useState } from "react";
-import { BiCart } from "react-icons/bi";
-import { useDispatch } from "react-redux";
+import { addCartItem } from "@/redux/rtk/cartApi";
+import { addToCart } from "@/redux/slices/carts_slice";
+import { RootState } from "@/redux/store";
+import { CartItem } from "@/types/cart";
 import { Product } from "@/types/local";
-import { BaseResponse } from "@/types/responses";
+import { API_BASE_URL } from "@/utils/constants";
 import { convertToRupiah, showSonnerToast } from "@/utils/helper";
 import { useSession } from "next-auth/react";
+import { useCallback, useState } from "react";
+import { BiCart } from "react-icons/bi";
 import {
   FaFacebook,
   FaInstagram,
   FaTwitter,
   FaWhatsapp,
 } from "react-icons/fa6";
+import { useDispatch, useSelector } from "react-redux";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import ImageLoad from "../guest/ImageLoad";
 
 interface IProductDetailPage {
-  product: BaseResponse<Product>;
+  product: Product;
 }
 
 const ProductDetailPage = ({ product }: IProductDetailPage) => {
@@ -29,29 +32,40 @@ const ProductDetailPage = ({ product }: IProductDetailPage) => {
   const [quantity, setQuantity] = useState(1);
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass>();
   const { data: session } = useSession();
-  const data = product.data;
-  const productImages = data.images;
+  const productImages = product.images;
+  const cartItems = useSelector((state: RootState) => state.carts.cartItems);
 
-  const handleAddToCart = async () => {
-    showSonnerToast("Product added to cart", data.name);
-    const item = {
-      id: data.id,
-      name: data.name,
-      image: data.images[0].url,
-      price: data.price,
+  const handleAddToCart = useCallback(() => {
+    const userId = session?.user.userId.toString();
+    const cartItem: CartItem = {
+      product: product,
       quantity,
-      stock: data.stock,
-      subTotal: Number(data.price) * quantity,
-      weight: data.weight,
-      productId: data.id,
+      subtotal: Number(product.price) * quantity,
+      userId,
     };
-  };
+    dispatch(addToCart(cartItem));
+    const existingProduct = cartItems.find(
+      (item) => item.product.id === cartItem.product.id
+    );
+    if (existingProduct) {
+      showSonnerToast(
+        "Product already exist in cart",
+        existingProduct.product.name
+      );
+    } else {
+      if (userId) {
+        // @ts-ignore
+        dispatch(addCartItem(cartItem));
+      }
+      showSonnerToast("Product added to cart", cartItem.product.name);
+    }
+  }, [cartItems, dispatch, product, quantity, session]);
 
   return (
     <div className="flex gap-10 mt-10 container">
       <div>
         {product &&
-          (productImages.length > 1 ? (
+          (product.images.length > 1 ? (
             <div className="flex flex-col gap-2">
               <Swiper
                 loop={true}
@@ -104,9 +118,9 @@ const ProductDetailPage = ({ product }: IProductDetailPage) => {
           ) : (
             <div>
               <ImageLoad
-                src={`${API_BASE_URL}${data.images[0].url}`}
+                src={`${API_BASE_URL}${product.images[0].url}`}
                 className="h-96 w-96"
-                alt={data.name}
+                alt={product.name}
               />
             </div>
           ))}
@@ -121,20 +135,27 @@ const ProductDetailPage = ({ product }: IProductDetailPage) => {
         </div>
       </div>
       <div className="flex flex-col gap-2 w-full">
-        <h3 className="font-bold text-3xl">{data.name}</h3>
+        <h3 className="font-bold text-3xl">{product.name}</h3>
         <hr />
         <p className="text-2xl text-green-700 font-semibold">
-          {convertToRupiah(Number(data.price))}
+          {convertToRupiah(Number(product.price))}
         </p>
-        <p>{data.description}</p>
+        <p>{product.description}</p>
+        <p
+          className={`${
+            product.stock < 4 ? "text-red-500" : "text-black"
+          } text-sm`}
+        >
+          Stock :<span className="ml-2">{product.stock}</span>
+        </p>
         <div className="flex gap-4 items-center">
           <p className="text-sm">Quantity: </p>
           <QuantityButton
             quantity={quantity}
             onDecrease={() => setQuantity((prev) => prev - 1)}
             onIncrease={() => setQuantity((prev) => prev + 1)}
-            productId={product.data.id.toString()}
-            stock={data.stock}
+            productId={product.id.toString()}
+            stock={product.stock}
           />
         </div>
         <div className="flex gap-2">

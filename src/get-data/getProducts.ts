@@ -15,7 +15,7 @@ export async function getProducts() {
 export async function getProductById(id: string) {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/products/${id}?populate=*`,
+      `${process.env.NEXT_PUBLIC_API_URL}/products/${id}?populate=deep`,
       {
         cache: "no-store",
       }

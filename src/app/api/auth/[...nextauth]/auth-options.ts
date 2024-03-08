@@ -18,6 +18,8 @@ export const authOptions: NextAuthOptions = {
           response_type: "code",
         },
       },
+      profileUrl:
+        "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=",
     }),
     Credentials({
       id: "credentials",
@@ -32,7 +34,7 @@ export const authOptions: NextAuthOptions = {
           type: "password",
         },
       },
-      async authorize(credentials, _req) {
+      async authorize(credentials, req) {
         try {
           return (
             (await axios
@@ -46,6 +48,8 @@ export const authOptions: NextAuthOptions = {
                   headers: {
                     Accept: "*/*",
                     "Content-Type": "application/json",
+                    // @ts-ignore
+                    cookie: req.headers.cookie || "",
                   },
                 }
               )
@@ -73,32 +77,61 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async session({ session, token, user }) {
-      session.user = token as any;
-      session.user.id = user ? user.id : "";
-      return Promise.resolve(session);
+      // session.user = token as any;
+      // session.user.id = user ? user.id : "";
+      // session.user.firstName = token.firstName as string;
+      // session.user.lastName = token.lastName as string;
+      // return Promise.resolve(session);
+      session.user.accessToken = token.accessToken as string;
+      session.user.userId = token.userId as number;
+      return session;
     },
-    async jwt({ token, user, account }) {
-      const isSignIn = user ? true : false;
-      if (isSignIn && account) {
-        try {
-          if (account.type == "credentials") {
-            // @ts-ignore
-            token.jwt = user.jwt;
-            token.id = user.id;
-          } else {
-            const publicUrl = process.env.NEXT_PUBLIC_API_URL;
-            const response = await fetch(
-              `${publicUrl}/auth/${account.provider}/callback?access_token=${account.access_token}`
-            );
-            const data = await response.json();
-            token.jwt = data.jwt;
-            token.id = data.user.id;
-          }
-        } catch (error) {
-          console.log("Fetch failed", error);
+    async jwt({ token, user, account, profile }) {
+      // const isSignIn = user ? true : false;
+      // if (isSignIn && account) {
+      //   try {
+      //     if (account.type == "credentials") {
+      //       token.firstName = user.firstName;
+      //       token.lastName = user.lastName;
+      //       token.jwt = user.jwt;
+      //       token.id = user.id;
+      //       return Promise.resolve(token);
+      //     } else {
+      //       const publicUrl = process.env.NEXT_PUBLIC_API_URL;
+      //       const response = await fetch(
+      //         `${publicUrl}/auth/${account.provider}/callback?access_token=${account.access_token}`
+      //       );
+      //       const data = await response.json();
+      //       token.jwt = data.jwt;
+      //       token.id = data.user.id;
+      //       return Promise.resolve(token);
+      //     }
+      //   } catch (error) {
+      //     console.log("Fetch failed", error);
+      //   }
+      // } else {
+      //   console.log("DATA IS NULL");
+      // }
+      // return Promise.resolve(token);
+      if (account) {
+        if (account.type !== "credentials") {
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/auth/${account.provider}/callback?access_token=${account.accessToken}`
+          );
+          const data = await res.json();
+          const { jwt, user } = data;
+          token.accessToken = jwt;
+          token.userId = user.id;
+        } else {
+          token.name = `${user.firstname} ${user.lastname}`;
+          token.accessToken = user.jwt;
+          token.firstName = user.firstname;
+          token.lastName = user.lastname;
+          token.username = user.username;
+          token.userId = user.id;
         }
       }
-      return Promise.resolve(token);
+      return token;
     },
   },
 };

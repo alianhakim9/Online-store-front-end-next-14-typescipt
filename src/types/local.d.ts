@@ -15,10 +15,10 @@ export type User = {
   id: string;
   name: string;
   email: string;
-  password: string;
   username: string;
   image: string;
-  verifyAsAdmin?: boolean;
+  firstName: string;
+  lastName: String;
 };
 
 export type CartItem = {
