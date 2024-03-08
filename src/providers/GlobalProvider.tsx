@@ -3,7 +3,6 @@
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import { CartContext } from "@/context/CartContext";
 import { useGetCartByUserIdQuery } from "@/redux/rtk/cartApi";
-import { getUserProfile } from "@/redux/rtk/userApi";
 import { setCartFromDb } from "@/redux/slices/carts_slice";
 import { CartItem, Carts } from "@/types/cart";
 import { Session } from "next-auth";
