@@ -15,13 +15,11 @@ Main purpose of this project as a Back-End functionality for Olshop, including A
 - Authentication & Authorization
   - Credentials Auth
   - OAuth2 (Sign In With Google)
-- Admin Panel
-  - Product, Category, Order Management
-  - File/Image Upload
 - Front-End / Client Side
   - Shopping Cart
 - Filtering, Sorting & Pagination
 - Payment Gateway (Midtrans)
+- Redux Toolkit State Management
 - Responsive Web (Development)
 
 # Project Installation
