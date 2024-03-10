@@ -3,13 +3,16 @@
 import ImageLoad from "@/components/guest/ImageLoad";
 import { Button } from "@/components/ui/button";
 import { removeCartItem } from "@/redux/slices/carts_slice";
+import { setTransactionToken } from "@/redux/slices/paymentSlice";
 import { RootState } from "@/redux/store";
-import { API_BASE_URL } from "@/utils/constants";
+import { API_BASE_URL, API_URL } from "@/utils/constants";
 import {
   convertToRupiah,
+  generateOrderDetailId,
   showSonnerToast,
   splitFullName,
 } from "@/utils/helper";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -35,8 +38,6 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import axios, { AxiosError, AxiosResponse } from "axios";
-import { setTransactionToken } from "@/redux/slices/paymentSlice";
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -49,19 +50,37 @@ const CartPage = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const [productId, setProductId] = useState("");
+  const [cartId, setCartId] = useState("");
 
   const handleCheckout = async () => {
     setIsLoading(true);
     if (session) {
+      const orderDetailId = generateOrderDetailId();
+      let productIds: number[] = [];
+      let quantities: number[] = [];
+
+      cartItems.map((item) => {
+        productIds.push(Number(item.product.id));
+        quantities.push(Number(item.quantity));
+      });
+
       const data = {
         first_name: splitFullName(session.user.name).firstName,
         last_name: splitFullName(session.user.name).lastName,
         email: session?.user.email,
         phone: "08943123989",
         total_price: totalPrice,
+        user: userId,
+        // order_detail: {
+        //   products: productIds,
+        //   quantities: quantities,
+        //   order_detail_id: orderDetailId,
+        // },
       };
+
       await axios
-        .post(`${API_BASE_URL}/api/payment-gateway`, data)
+        .post(`${API_URL}/payment-gateway`, data)
         .then((response: AxiosResponse) => {
           dispatch(setTransactionToken(response.data));
           router.push("/payment");
@@ -75,7 +94,7 @@ const CartPage = () => {
     }
   };
 
-  const handleRemoveCartItem = (cartId?: string, productId?: string) => {
+  const handleRemoveCartItem = () => {
     const data = {
       userId,
       productId,
@@ -155,7 +174,14 @@ const CartPage = () => {
                       </TableCell>
                       <TableCell>{convertToRupiah(item.subtotal)}</TableCell>
                       <TableCell>
-                        <Dialog open={open} onOpenChange={setOpen}>
+                        <Dialog
+                          open={open}
+                          onOpenChange={() => {
+                            setOpen(true);
+                            setProductId(item.product.id);
+                            setCartId(item.id || "");
+                          }}
+                        >
                           <DialogTrigger>
                             <p className="text-red-500 font-semibold">Delete</p>
                           </DialogTrigger>
@@ -172,10 +198,7 @@ const CartPage = () => {
                               <Button
                                 variant="destructive"
                                 onClick={() => {
-                                  handleRemoveCartItem(
-                                    item.id,
-                                    item.product.id
-                                  );
+                                  handleRemoveCartItem();
                                 }}
                               >
                                 Remove

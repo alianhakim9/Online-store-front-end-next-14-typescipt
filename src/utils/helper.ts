@@ -38,6 +38,16 @@ export function generateOrderId(): string {
   return orderId;
 }
 
+export function generateOrderDetailId(): string {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let orderId = "order_detail_";
+  for (let i = 0; i < 10; i++) {
+    orderId += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return orderId;
+}
+
 export function generateSHA512(input: string): string {
   const hash = crypto.createHash("sha512");
   hash.update(input);

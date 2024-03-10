@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import Cookies from "js-cookie";
 
 type PaymentSliceState = {
   transactionToken: string;
@@ -13,7 +14,11 @@ const paymentSlice = createSlice({
   initialState,
   reducers: {
     setTransactionToken: (state, action) => {
-      state.transactionToken = action.payload;
+      if (Cookies.get("ts-token")) {
+        Cookies.remove("ts-token");
+      }
+      state.transactionToken = action.payload.transaction_token;
+      Cookies.set("ts-token", state.transactionToken);
     },
   },
 });

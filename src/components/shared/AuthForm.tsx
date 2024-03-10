@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RootState } from "@/redux/store";
-import { API_BASE_URL } from "@/utils/constants";
+import { API_BASE_URL, API_URL } from "@/utils/constants";
 import { showSonnerToast } from "@/utils/helper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
@@ -68,7 +68,7 @@ const AuthForm = ({ isSignUp, signUpUrl, fromAdmin }: IAuthFormProps) => {
     setIsLoading(true);
     if (isSignUp) {
       await axios
-        .post(`${API_BASE_URL}/api/auth/local/register`, {
+        .post(`${API_URL}/auth/local/register`, {
           firstname: values.firstname,
           lastname: values.lastname,
           username: values.username,

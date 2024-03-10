@@ -35,6 +35,14 @@ export default async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
   }
+
+  if (request.nextUrl.pathname.includes("/user")) {
+    if (!token) {
+      return NextResponse.rewrite(new URL("/sign-in", request.url));
+    } else {
+      return NextResponse.next();
+    }
+  }
 }
 
 export const config = {

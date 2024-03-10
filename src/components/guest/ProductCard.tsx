@@ -2,22 +2,21 @@
 
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { addToCart } from "@/redux/slices/carts_slice";
-import { CartItem, Carts } from "@/types/cart";
+import { CartItem } from "@/types/cart";
 import { Product } from "@/types/local";
 import { API_BASE_URL } from "@/utils/constants";
 import { convertToRupiah, showSonnerToast } from "@/utils/helper";
 import { Session } from "next-auth";
 import Link from "next/link";
 import { BiCart } from "react-icons/bi";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../ui/button";
 import ImageLoad from "./ImageLoad";
 // import { addCartItem } from "@/redux/rtk/cartApi";
-import { RootState } from "@/redux/store";
-import { useCallback, useEffect, useRef, useState } from "react";
-import useShallowEqualSelector from "@/redux/utils/useShallowEqualSelector";
-import { Carter_One } from "next/font/google";
 import { addCartItem } from "@/redux/rtk/cartApi";
+import { RootState } from "@/redux/store";
+import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
+import { useCallback } from "react";
 
 interface IProductProps {
   product: Product;
@@ -56,19 +55,32 @@ const ProductCard = ({ product, session }: IProductProps) => {
     }
   }, [cartItems, dispatch, product, session?.user.userId]);
 
+  const handleFavourite = () => {};
+
   return (
     <Card className="flex flex-col justify-between">
       <CardHeader>
         <div>
-          <ImageLoad
-            className="h-40 w-40 mx-auto"
-            src={
-              thumbnail
-                ? `${API_BASE_URL}${thumbnail}`
-                : "/images/placeholder.jpg"
-            }
-            alt={product.name}
-          />
+          <div className="relative">
+            <ImageLoad
+              className="h-40 w-40 mx-auto"
+              src={
+                thumbnail
+                  ? `${API_BASE_URL}${thumbnail}`
+                  : "/images/placeholder.jpg"
+              }
+              alt={product.name}
+            />
+            <div className="absolute bottom-3 right-0">
+              <Button variant="default" size="icon" className="rounded-full">
+                {Number(product.id) % 2 === 0 ? (
+                  <HeartFilledIcon color="red" />
+                ) : (
+                  <HeartIcon color="white" />
+                )}
+              </Button>
+            </div>
+          </div>
           <p className="font-semibold text-sm mt-2">
             {convertToRupiah(Number(product.price))}
           </p>

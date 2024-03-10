@@ -72,7 +72,7 @@ const cartsSlice = createSlice({
       }
       let total = 0;
       state.cartItems = state.cartItems.filter((item) => {
-        total = state.totalPrice - item.subtotal;
+        total = Number(item.product.price) * item.quantity;
         return item.product.id !== productId;
       });
       state.totalPrice = total;

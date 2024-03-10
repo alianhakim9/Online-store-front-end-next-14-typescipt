@@ -9,8 +9,8 @@ import { guestNavbarMenus, isLoginNavbarMenus } from "@/utils/menus";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { BiCart } from "react-icons/bi";
-import { IoNotificationsOutline } from "react-icons/io5";
+import { BiCart, BiLogOut } from "react-icons/bi";
+import { IoLogOut, IoNotificationsOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import { Button } from "../ui/button";
 import {
@@ -20,11 +20,17 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { useState } from "react";
 
 const Navbar = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const { cartItems } = useSelector((state: RootState) => state.carts);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const closeDropdown = () => {
+    setIsOpen(false);
+  };
 
   return (
     <div className="bg-white border-b border-gray-200 w-full top-0 fixed z-50">
@@ -76,6 +82,11 @@ const Navbar = () => {
               </Button>
             ))}
           {session && (
+            <Button variant="ghost" size="icon" onClick={() => onSignOut()}>
+              <IoLogOut size={24} />
+            </Button>
+          )}
+          {session && (
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Avatar>
@@ -91,19 +102,19 @@ const Navbar = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem>
-                  <Button variant="link">Account</Button>
+                  <Link href="/user/account">Account</Link>
+                  {/* <Button variant="link"> */}
+                  {/* </Button> */}
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <Button variant="link">My Order</Button>
+                  <Link href="/user/account">My Order</Link>
+                  {/* <Button variant="link">My Order</Button> */}
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Button variant="link" onClick={() => onSignOut()}>
-                    Logout
-                  </Button>
-                </DropdownMenuItem>
+                <DropdownMenuItem></DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           )}
+
           {/* render if is logged in false */}
           {!session &&
             guestNavbarMenus.map((menu, index) => (
