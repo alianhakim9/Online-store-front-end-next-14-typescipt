@@ -125,8 +125,8 @@ const ProductDetailPage = ({ product }: IProductDetailPage) => {
             </div>
           ))}
         <div className="flex flex-col gap-1 mt-5">
-          <p className="font-semibold">Share this product</p>
-          <div className="flex gap-2 items-center">
+          <p className="font-semibold">Bagikan produk ini</p>
+          <div className="flex gap-2 items-center mt-4">
             <FaFacebook size={24} />
             <FaTwitter size={24} />
             <FaInstagram size={24} />
@@ -146,10 +146,10 @@ const ProductDetailPage = ({ product }: IProductDetailPage) => {
             product.stock < 4 ? "text-red-500" : "text-black"
           } text-sm`}
         >
-          Stock :<span className="ml-2">{product.stock}</span>
+          Stok produk :<span className="ml-2">{product.stock}</span>
         </p>
         <div className="flex gap-4 items-center">
-          <p className="text-sm">Quantity: </p>
+          <p className="text-sm">Kuantitas: </p>
           <QuantityButton
             quantity={quantity}
             onDecrease={() => setQuantity((prev) => prev - 1)}
@@ -161,10 +161,10 @@ const ProductDetailPage = ({ product }: IProductDetailPage) => {
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={handleAddToCart}>
             <BiCart size={16} className="mr-2" />
-            Add To Cart
+            Tambah ke keranjang
           </Button>
           <Button variant="default" size="sm">
-            Buy This Product
+            Beli produk ini
           </Button>
         </div>
       </div>

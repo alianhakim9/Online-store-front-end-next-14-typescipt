@@ -58,9 +58,9 @@ export default function PaymentPage({ tsToken }: IPaymentPage) {
     <div className="grid grid-cols-2 gap-4">
       <div>
         <Link href={"/cart"} className="text-sm mb-4 underline">
-          Back to cart
+          Kembali ke halaman keranjang
         </Link>
-        <h3 className="text-2xl font-semibold">Payment Detail</h3>
+        <h3 className="text-2xl font-semibold">Rincian pembelian</h3>
         {cartItems.map((cart: CartItem, index) => (
           <div key={index}>
             <ScrollArea className="max-h-[500px]">
@@ -85,7 +85,7 @@ export default function PaymentPage({ tsToken }: IPaymentPage) {
           </div>
         ))}
         <p className="font-semibold mt-2 text-sm">
-          Total should pay : {convertToRupiah(totalPrice)}
+          Total yang harus dibayar : {convertToRupiah(totalPrice)}
         </p>
         <Button
           onClick={() => {
@@ -95,12 +95,15 @@ export default function PaymentPage({ tsToken }: IPaymentPage) {
           className="mt-3"
           disabled={isPay}
         >
-          Pay Now
+          Bayar sekarang
         </Button>
       </div>
       {isPay && (
         <div className="flex flex-col">
-          <h3 className="text-2xl font-semibold">Select Payment Method</h3>
+          <h3 className="text-2xl font-semibold">Pilih metode pembayaran</h3>
+          <p className="text-sm font-light">
+            <i>Harap tunggu bila tampilan belum muncul</i>
+          </p>
           <div id="snap-container" className="w-full mt-4 rounded-md"></div>
         </div>
       )}

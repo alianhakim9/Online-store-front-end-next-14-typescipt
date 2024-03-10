@@ -21,12 +21,12 @@ export const sidebarMenus = [
 
 export const guestNavbarMenus = [
   {
-    title: "Login",
+    title: "Masuk",
     url: "/sign-in",
     variant: true,
   },
   {
-    title: "Sign Up",
+    title: "Daftar",
     url: "/sign-up",
     variant: false,
   },
@@ -34,7 +34,7 @@ export const guestNavbarMenus = [
 
 export const isLoginNavbarMenus = [
   {
-    title: "favourite",
+    title: "Favorit",
     url: "/favourite",
     icon: BiHeart,
   },
@@ -43,7 +43,7 @@ export const isLoginNavbarMenus = [
 export const footerMenus = {
   items1: [
     {
-      title: "About us",
+      title: "Tentang kami",
       url: "/",
     },
     {

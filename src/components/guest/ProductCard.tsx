@@ -43,7 +43,7 @@ const ProductCard = ({ product, session }: IProductProps) => {
     );
     if (existingProduct) {
       showSonnerToast(
-        "Product already exist in cart",
+        "Produk sudah ada di keranjang",
         existingProduct.product.name
       );
     } else {
@@ -51,11 +51,9 @@ const ProductCard = ({ product, session }: IProductProps) => {
         // @ts-ignore
         dispatch(addCartItem(cartItem));
       }
-      showSonnerToast("Product added to cart", cartItem.product.name);
+      showSonnerToast("Produk ditambahkan ke keranjang", cartItem.product.name);
     }
   }, [cartItems, dispatch, product, session?.user.userId]);
-
-  const handleFavourite = () => {};
 
   return (
     <Card className="flex flex-col justify-between">
@@ -97,7 +95,7 @@ const ProductCard = ({ product, session }: IProductProps) => {
           className="rounded-lg hover:shadow-md"
           onClick={handleAddToCart}
         >
-          <BiCart size={20} className="mr-2" /> Add To Cart
+          <BiCart size={20} className="mr-1" /> Tambah keranjang
         </Button>
       </CardFooter>
     </Card>

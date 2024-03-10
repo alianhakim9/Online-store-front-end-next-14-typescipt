@@ -8,7 +8,6 @@ import { RootState } from "@/redux/store";
 import { API_BASE_URL, API_URL } from "@/utils/constants";
 import {
   convertToRupiah,
-  generateOrderDetailId,
   showSonnerToast,
   splitFullName,
 } from "@/utils/helper";
@@ -38,7 +37,6 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-
 const CartPage = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -56,7 +54,6 @@ const CartPage = () => {
   const handleCheckout = async () => {
     setIsLoading(true);
     if (session) {
-      const orderDetailId = generateOrderDetailId();
       let productIds: number[] = [];
       let quantities: number[] = [];
 
@@ -86,7 +83,7 @@ const CartPage = () => {
           router.push("/payment");
         })
         .catch((err: AxiosError) => {
-          showSonnerToast("Error while checkout", err.message);
+          showSonnerToast("Terjadi kesalahan pada saat checkout", err.message);
         })
         .finally(() => setIsLoading(false));
     } else {
@@ -111,7 +108,7 @@ const CartPage = () => {
   return (
     <div>
       <h3 className="text-3xl mb-5 font-semibold text-gray-600 text-center container">
-        Shopping Cart
+        Halaman Keranjang
       </h3>
       {cartItems.length === 0 ? (
         <div className="w-full flex items-center justify-center flex-col">
@@ -128,13 +125,13 @@ const CartPage = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead className="font-bold"></TableHead>
-                  <TableHead className="font-bold">Product</TableHead>
-                  <TableHead className="font-bold">Price</TableHead>
+                  <TableHead className="font-bold">Produk</TableHead>
+                  <TableHead className="font-bold">Harga</TableHead>
                   <TableHead className="font-bold max-w-[100px]">
-                    Quantity
+                    Kuantitas
                   </TableHead>
                   <TableHead className="font-bold">SubTotal</TableHead>
-                  <TableHead className="font-bold">Action</TableHead>
+                  <TableHead className="font-bold">Aksi</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -187,11 +184,9 @@ const CartPage = () => {
                           </DialogTrigger>
                           <DialogContent>
                             <DialogHeader>
-                              <DialogTitle>
-                                Are you absolutely sure?
-                              </DialogTitle>
+                              <DialogTitle>Apakah anda yakin?</DialogTitle>
                               <DialogDescription>
-                                This action cannot be undone.
+                                aksi ini tidak dapat dibatalkan
                               </DialogDescription>
                             </DialogHeader>
                             <DialogFooter>
@@ -217,7 +212,7 @@ const CartPage = () => {
             <p className="font-bold">Total : {convertToRupiah(totalPrice)}</p>
             <div className="flex gap-1">
               <Button variant="outline" onClick={() => router.push("/home")}>
-                Continue shopping
+                Lanjutkan belanja
               </Button>
               <LoadingButton
                 isLoading={isLoading}

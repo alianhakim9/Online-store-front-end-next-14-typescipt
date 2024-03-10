@@ -33,7 +33,7 @@ const HomePage = ({ products, categories }: IHomepage) => {
         <div className="my-4 flex gap-4">
           <div className="flex gap-8">
             <div className="flex flex-col gap-1 min-w-[250px]">
-              <h4 className="text-1xl font-semibold">Categories</h4>
+              <h4 className="text-1xl font-semibold">Kategori produk</h4>
               <div>
                 {categories.data.length === 0 && (
                   <EmptyState title="Category still empty" mode="text" />

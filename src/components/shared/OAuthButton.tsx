@@ -18,7 +18,7 @@ const OAuthButton = ({ onClick, title, isLoading }: IOAuthButton) => {
       onClick={onClick}
       disabled={isLoading}
     >
-      <IoLogoGoogle size={20} className="mr-4" /> {title} With Google
+      <IoLogoGoogle size={20} className="mr-4" /> {title} Dengan Google
     </Button>
   );
 };

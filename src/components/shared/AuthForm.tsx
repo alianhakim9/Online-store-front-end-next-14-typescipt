@@ -76,11 +76,15 @@ const AuthForm = ({ isSignUp, signUpUrl, fromAdmin }: IAuthFormProps) => {
           password: values.password,
         })
         .then(() => {
-          showSonnerToast("Account created", "Please login to continue");
+          showSonnerToast(
+            "Akun berhasil dibuat",
+            "Silahkan masuk untuk melanjutkan"
+          );
+          router.push("/sign-in");
         })
         .catch((error: AxiosError) => {
           console.log(error.response);
-          showSonnerToast("Sign up failed", error.message);
+          showSonnerToast("Terjadi kesalahan", error.message);
         })
         .finally(() => {
           setIsLoading(false);
@@ -98,8 +102,8 @@ const AuthForm = ({ isSignUp, signUpUrl, fromAdmin }: IAuthFormProps) => {
             router.refresh();
           } else if (v?.status === 401) {
             showSonnerToast(
-              "Sign in failed",
-              "Please check again your email or password"
+              "Gagal masuk",
+              "Silahkan periksa kembali email atau kata sandi anda"
             );
           }
         })
@@ -120,7 +124,7 @@ const AuthForm = ({ isSignUp, signUpUrl, fromAdmin }: IAuthFormProps) => {
               name="firstname"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>First Name</FormLabel>
+                  <FormLabel>Nama depan*</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -133,7 +137,7 @@ const AuthForm = ({ isSignUp, signUpUrl, fromAdmin }: IAuthFormProps) => {
               name="lastname"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Last Name</FormLabel>
+                  <FormLabel>Nama belakang*</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -149,7 +153,7 @@ const AuthForm = ({ isSignUp, signUpUrl, fromAdmin }: IAuthFormProps) => {
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Username*</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -163,7 +167,7 @@ const AuthForm = ({ isSignUp, signUpUrl, fromAdmin }: IAuthFormProps) => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Email*</FormLabel>
               <FormControl>
                 <Input placeholder="example@mail.com" {...field} />
               </FormControl>
@@ -176,7 +180,7 @@ const AuthForm = ({ isSignUp, signUpUrl, fromAdmin }: IAuthFormProps) => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Kata sandi*</FormLabel>
               <FormControl>
                 <PasswordInput {...field} />
               </FormControl>
@@ -190,7 +194,7 @@ const AuthForm = ({ isSignUp, signUpUrl, fromAdmin }: IAuthFormProps) => {
             name="confirmPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Confirm Password</FormLabel>
+                <FormLabel>Konfirmasi kata sandi*</FormLabel>
                 <FormControl>
                   <PasswordInput {...field} />
                 </FormControl>
@@ -202,7 +206,7 @@ const AuthForm = ({ isSignUp, signUpUrl, fromAdmin }: IAuthFormProps) => {
         <div className="flex flex-col">
           <LoadingButton
             type="submit"
-            title={isSignUp ? "Sign Up" : "Sign In"}
+            title={isSignUp ? "Daftar" : "Masuk"}
             isLoading={isLoading}
             className="mt-4"
           />
@@ -216,14 +220,14 @@ const AuthForm = ({ isSignUp, signUpUrl, fromAdmin }: IAuthFormProps) => {
               }}
               disabled={isLoading}
             >
-              Sign Up
+              Buat akun
             </Button>
           )}
         </div>
         {!fromAdmin && (
           <div className="mt-4 flex flex-col gap-2">
             <hr />
-            <p className="text-center">Or</p>
+            <p className="text-center"></p>
             <OAuthButton
               onClick={() => signIn("google")}
               title={isSignUp ? "Sign Up" : "Login"}
