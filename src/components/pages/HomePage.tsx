@@ -2,13 +2,13 @@
 
 import { Category, Product } from "@/types/local";
 import { BaseResponse } from "@/types/responses";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
 import Banner from "../guest/Banner";
+import EmptyState from "../guest/EmptyState";
 import ProductCard from "../guest/ProductCard";
 import ProductSkeletonCard from "../guest/skeletons/ProductSkeletonCard";
 import { Separator } from "../ui/separator";
-import { useSession } from "next-auth/react";
-import { ScrollArea } from "../ui/scroll-area";
-import EmptyState from "../guest/EmptyState";
 
 interface IHomepage {
   products: BaseResponse<Product[]>;
@@ -17,6 +17,7 @@ interface IHomepage {
 
 const HomePage = ({ products, categories }: IHomepage) => {
   const { data: session } = useSession();
+  const [currentProducts, setCurrentProducts] = useState(products.data);
 
   if (!products || !categories) {
     let skeletons = [];
@@ -25,6 +26,17 @@ const HomePage = ({ products, categories }: IHomepage) => {
     }
     return <div className="grid grid-cols-5 gap-4">{skeletons}</div>;
   }
+
+  const getProductsByCategory = async (categoryId?: string) => {
+    if (categoryId) {
+      const filteredProducts = products.data.filter(
+        (item) => item.category.id === categoryId
+      );
+      setCurrentProducts(filteredProducts);
+    } else {
+      setCurrentProducts(products.data);
+    }
+  };
 
   return (
     <div>
@@ -39,8 +51,18 @@ const HomePage = ({ products, categories }: IHomepage) => {
                   <EmptyState title="Category still empty" mode="text" />
                 )}
                 <ul>
+                  <li
+                    className="list-disc list-inside text-sm underline hover:cursor-pointer"
+                    onClick={() => getProductsByCategory()}
+                  >
+                    Semua kategori
+                  </li>
                   {categories.data.map((item) => (
-                    <li key={item.id} className="list-disc list-inside text-sm">
+                    <li
+                      key={item.id}
+                      className="list-disc list-inside text-sm underline hover:cursor-pointer"
+                      onClick={() => getProductsByCategory(item.id)}
+                    >
                       {item.name}
                     </li>
                   ))}
@@ -49,13 +71,13 @@ const HomePage = ({ products, categories }: IHomepage) => {
             </div>
             <Separator orientation="vertical" />
           </div>
-          {products.data.length === 0 && (
+          {currentProducts.length === 0 && (
             <div className="w-full">
               <EmptyState title="Products still empty" mode="graphic" />
             </div>
           )}
           <div className="grid grid-cols-5 gap-2">
-            {products.data.map((item) => (
+            {currentProducts.map((item) => (
               <ProductCard key={item.name} product={item} session={session} />
             ))}
           </div>
