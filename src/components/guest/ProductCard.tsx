@@ -1,36 +1,44 @@
 "use client";
 
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { addCartItem } from "@/redux/rtk/cartApi";
+import { addFavProduct } from "@/redux/rtk/productApi";
 import { addToCart } from "@/redux/slices/carts_slice";
+import { RootState } from "@/redux/store";
 import { CartItem } from "@/types/cart";
 import { Product } from "@/types/local";
 import { API_BASE_URL } from "@/utils/constants";
 import { convertToRupiah, showSonnerToast } from "@/utils/helper";
+import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
 import { Session } from "next-auth";
 import Link from "next/link";
+import { useCallback } from "react";
 import { BiCart } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../ui/button";
 import ImageLoad from "./ImageLoad";
-// import { addCartItem } from "@/redux/rtk/cartApi";
-import { addCartItem } from "@/redux/rtk/cartApi";
-import { RootState } from "@/redux/store";
-import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
-import { useCallback } from "react";
+import { addToFavourite } from "@/redux/slices/products_slice";
 
 interface IProductProps {
   product: Product;
   session?: Session | null;
+  showFavBtn?: boolean;
+  showDelFavBtn?: boolean;
 }
 
-const ProductCard = ({ product, session }: IProductProps) => {
+const ProductCard = ({
+  product,
+  session,
+  showFavBtn,
+  showDelFavBtn,
+}: IProductProps) => {
   const dispatch = useDispatch();
   const thumbnail = product.images[0].formats.thumbnail.url;
   const cartItems = useSelector((state: RootState) => state.carts.cartItems);
+  const favProducts = useSelector((state: RootState) => state.product.products);
+  const userId = session?.user.userId.toString();
 
   const handleAddToCart = useCallback(() => {
-    const userId = session?.user.userId.toString();
-    // const userId = session?.user.sub;
     const cartItem: CartItem = {
       product: product,
       quantity: 1,
@@ -53,8 +61,31 @@ const ProductCard = ({ product, session }: IProductProps) => {
       }
       showSonnerToast("Produk ditambahkan ke keranjang", cartItem.product.name);
     }
-  }, [cartItems, dispatch, product, session?.user.userId]);
+  }, [cartItems, dispatch, product, userId]);
 
+  const handleAddFavProduct = () => {
+    if (userId) {
+      dispatch(addToFavourite(product));
+      const existingProduct = favProducts.find(
+        (item) => item.id === product.id
+      );
+      if (existingProduct) {
+        showSonnerToast(
+          "Produk sudah ada halaman favorit",
+          existingProduct.name
+        );
+      } else {
+        dispatch(
+          // @ts-ignore
+          addFavProduct({
+            productId: product.id,
+            userId: userId,
+          })
+        );
+        showSonnerToast("Produk ditambahkan ke favorit", product.name);
+      }
+    }
+  };
   return (
     <Card className="flex flex-col justify-between">
       <CardHeader>
@@ -70,13 +101,20 @@ const ProductCard = ({ product, session }: IProductProps) => {
               alt={product.name}
             />
             <div className="absolute bottom-3 right-0">
-              <Button variant="default" size="icon" className="rounded-full">
-                {Number(product.id) % 2 === 0 ? (
-                  <HeartFilledIcon color="red" />
-                ) : (
-                  <HeartIcon color="white" />
-                )}
-              </Button>
+              {showFavBtn && (
+                <Button
+                  variant="default"
+                  size="icon"
+                  className="rounded-full"
+                  onClick={handleAddFavProduct}
+                >
+                  {product.isFavourite ? (
+                    <HeartFilledIcon color="red" />
+                  ) : (
+                    <HeartIcon color="white" />
+                  )}
+                </Button>
+              )}
             </div>
           </div>
           <p className="font-semibold text-sm mt-2">
@@ -90,13 +128,22 @@ const ProductCard = ({ product, session }: IProductProps) => {
           <Link href={`/products/${product.id}`}>{product.name}</Link>
         </CardTitle>
       </CardHeader>
-      <CardFooter className="self-center">
+      <CardFooter
+        className={`${
+          showDelFavBtn ? "flex flex-col gap-2 w-full" : "self-center "
+        }`}
+      >
         <Button
           className="rounded-lg hover:shadow-md"
           onClick={handleAddToCart}
         >
           <BiCart size={20} className="mr-1" /> Tambah keranjang
         </Button>
+        {showDelFavBtn && (
+          <Button className="rounded-lg hover:shadow-md" variant="destructive">
+            Hapus Produk Favorit
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );

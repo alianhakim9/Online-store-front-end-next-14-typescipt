@@ -9,6 +9,8 @@ export type Product = {
   images: Image[];
   category: Category;
   weight: number;
+  idFavourite?: string;
+  isFavourite?: boolean;
 };
 
 export type User = {

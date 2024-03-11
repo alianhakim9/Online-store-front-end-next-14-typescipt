@@ -3,11 +3,14 @@
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import { CartContext } from "@/context/CartContext";
 import { useGetCartByUserIdQuery } from "@/redux/rtk/cartApi";
+import { useGetFavProductByUserIdQuery } from "@/redux/rtk/productApi";
 import { setCartFromDb } from "@/redux/slices/carts_slice";
+import { setFavProductFromDb } from "@/redux/slices/products_slice";
 import { CartItem, Carts } from "@/types/cart";
+import { Product } from "@/types/local";
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
@@ -22,8 +25,11 @@ const GlobalProvider = ({ session, children }: Props) => {
   const userId = session?.user.userId.toString();
   const [cart, setCart] = useState<Carts[]>();
   const { data } = useGetCartByUserIdQuery(userId as string);
+  const { data: favouriteProducts } = useGetFavProductByUserIdQuery(
+    userId as string
+  );
 
-  useEffect(() => {
+  const setCartItem = useCallback(() => {
     if (userId && data) {
       const cartItems = data.data.map((item: any) => {
         let cartItem: CartItem = {
@@ -40,7 +46,34 @@ const GlobalProvider = ({ session, children }: Props) => {
         })
       );
     }
-  }, [data, dispatch, session, userId]);
+  }, [data, dispatch, userId]);
+
+  const setFavProduct = useCallback(() => {
+    if (userId && favouriteProducts) {
+      const favProducts = favouriteProducts.data.map((item: any) => {
+        const productResponse = item.product;
+        let favProduct: Product = {
+          id: productResponse.id,
+          category: productResponse.category,
+          description: productResponse.description,
+          images: productResponse.images,
+          name: productResponse.name,
+          price: productResponse.price,
+          stock: productResponse.stock,
+          weight: productResponse.weight,
+          idFavourite: item.id,
+          isFavourite: true,
+        };
+        return favProduct;
+      });
+      dispatch(setFavProductFromDb(favProducts));
+    }
+  }, [dispatch, favouriteProducts, userId]);
+
+  useEffect(() => {
+    setCartItem();
+    setFavProduct();
+  }, [setCartItem, setFavProduct]);
 
   const setCartToState = () => {
     if (localStorage.getItem("carts")) {

@@ -1,4 +1,12 @@
 import { Metadata } from "next";
+import dynamic from "next/dynamic";
+
+const FavouritePage = dynamic(
+  () => import("@/components/pages/FavouritePage"),
+  {
+    ssr: false,
+  }
+);
 
 export const metadata: Metadata = {
   title: "Halaman produk favorit",
@@ -6,9 +14,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return (
-    <div>
-      <p>Favourite</p>
-    </div>
-  );
+  return <FavouritePage />;
 }

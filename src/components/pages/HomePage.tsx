@@ -78,7 +78,12 @@ const HomePage = ({ products, categories }: IHomepage) => {
           )}
           <div className="grid grid-cols-5 gap-2">
             {currentProducts.map((item) => (
-              <ProductCard key={item.name} product={item} session={session} />
+              <ProductCard
+                key={item.name}
+                product={item}
+                session={session}
+                showFavBtn
+              />
             ))}
           </div>
         </div>

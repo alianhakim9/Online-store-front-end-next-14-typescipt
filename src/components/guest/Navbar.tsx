@@ -9,7 +9,6 @@ import { guestNavbarMenus, isLoginNavbarMenus } from "@/utils/menus";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { BiCart } from "react-icons/bi";
 import { IoLogOut, IoNotificationsOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
@@ -26,12 +25,11 @@ const Navbar = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const { cartItems } = useSelector((state: RootState) => state.carts);
-  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="bg-white border-b border-gray-200 w-full top-0 fixed z-50">
       <div className=" bg-black text-white w-full flex items-center justify-center p-1">
-        <p className="text-sm">Dapatkan diskon sampai 80% sampai besok</p>
+        <p className="text-sm">Dapatkan diskon hingga 80% sampai besok</p>
       </div>
       <div className="container flex justify-between items-center gap-5 p-5 ">
         <Link href="/home">
