@@ -5,12 +5,12 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import Footer from "@/app/ui/Footer";
 import { poppins } from "@/app/ui/fonts";
 import { Navbar } from "@/app/ui/navbar/navbar";
 import GlobalProvider from "@/app/providers/global-provider";
 import { StoreProvider } from "@/app/providers/store-provider";
 import { authOptions } from "./api/auth/[...nextauth]/auth-options";
+import Footer from "@/app/ui/footer";
 
 export const metadata: Metadata = {
   title: {

@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import dynamic from "next/dynamic";
 
 const FavouritePage = dynamic(
-  () => import("@/app/ui/favourite/FavouritePage"),
+  () => import("@/app/ui/favourite/all-favourite"),
   {
     ssr: false,
   }

@@ -1,9 +1,9 @@
 "use client";
 
 import { RootState } from "@/app/lib/redux/store";
-import { Product } from "@/types/local";
 import { useSelector } from "react-redux";
-import ProductCard from "../product/card";
+import ProductCard from "@/app/ui/product/card";
+import { Product } from "@/app/lib/definitions";
 
 const FavouritePage = () => {
   const products = useSelector((state: RootState) => state.product.products);

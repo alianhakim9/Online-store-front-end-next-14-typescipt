@@ -1,5 +1,5 @@
-import ImageLoad from "@/app/ui/ImageLoad";
-import AuthForm from "@/app/ui/AuthForm";
+import ImageLoad from "@/app/ui/image-load";
+import AuthForm from "@/app/ui/auth-form";
 
 import { Metadata } from "next";
 

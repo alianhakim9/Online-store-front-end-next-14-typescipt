@@ -11,11 +11,12 @@ const ImageLoad = ({ className, src, alt }: Props) => {
     <div className={`${className} relative`}>
       <Image
         src={src}
-        layout="fill"
-        objectFit="cover"
+        // objectFit="cover"
         alt={alt}
         className="rounded-md"
         loading="lazy"
+        fill
+        style={{ objectFit: "cover" }}
       />
     </div>
   );

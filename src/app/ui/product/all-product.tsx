@@ -1,8 +1,13 @@
 import { fetchProducts } from "@/app/lib/data";
 import ProductCard from "@/app/ui/product/card";
 
-export async function AllProduct() {
-  const products = await fetchProducts();
+interface Props {
+  category?: string;
+  query?: string;
+}
+
+export async function AllProduct({ category, query }: Props) {
+  const products = await fetchProducts(category, query);
   return (
     <div className="grid grid-cols-5 gap-4">
       {products.map((product) => (

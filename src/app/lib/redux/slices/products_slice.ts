@@ -1,8 +1,8 @@
-import { Product } from "@/types/local";
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
-import { addFavProduct } from "../rtk/productApi";
+import { addFavProduct } from "@/app/lib/redux/rtk/productApi";
 import { ProductState } from "@/types/state";
+import { Product } from "@/app/lib/definitions";
 
 const initialState: ProductState = Cookies.get("favProducts")
   ? {

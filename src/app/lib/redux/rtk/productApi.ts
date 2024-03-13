@@ -1,9 +1,8 @@
 // Need to use the React-specific entry point to import createApi
-import { Product } from "@/types/local";
-import { BaseResponse } from "@/types/responses";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import axios, { AxiosError, AxiosResponse } from "axios";
+import { BaseResponse, Product } from "@/app/lib/definitions";
 
 export const productApi = createApi({
   reducerPath: "productApi",

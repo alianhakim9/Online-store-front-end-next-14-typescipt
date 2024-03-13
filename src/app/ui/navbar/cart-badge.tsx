@@ -14,7 +14,11 @@ export function CartBadge() {
   const cartItems = useSelector((state: RootState) => state.carts.cartItems);
 
   useEffect(() => {
-    if (cartItems.length !== 0) setLength(cartItems.reduce((a, c) => a + 1, 0));
+    if (cartItems.length !== 0) {
+      setLength(cartItems.reduce((a, c) => a + 1, 0));
+    } else {
+      setLength(0);
+    }
   }, [cartItems]);
 
   return (

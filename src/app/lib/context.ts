@@ -1,7 +1,7 @@
 "use client";
 
-import { Carts } from "@/types/cart";
 import { createContext } from "react";
+import { Carts } from "@/app/lib/definitions";
 
 // const defaultValue: Cart[] = [];
 const defaultValue: Carts[] = [];

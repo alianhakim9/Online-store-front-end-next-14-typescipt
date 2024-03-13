@@ -6,8 +6,8 @@ import {
   FaTwitter,
   FaWhatsapp,
 } from "react-icons/fa6";
-import ImageLoad from "./ImageLoad";
-import { footerMenus } from "../lib/menus";
+import ImageLoad from "@/app/ui/image-load";
+import { footerMenus } from "@/app/lib/menus";
 
 const Footer = () => {
   return (

@@ -1,4 +1,4 @@
-import SidebarAccordion from "@/app/ui/SidebarAccordion";
+import SidebarAccordion from "@/app/ui/sidebar-accordion";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { BiNotification } from "react-icons/bi";

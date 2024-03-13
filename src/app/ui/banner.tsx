@@ -1,10 +1,10 @@
 "use client";
 
-import ImageLoad from "./ImageLoad";
+import ImageLoad from "@/app/ui/image-load";
 
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { carousels } from "../lib/data";
+import { carousels } from "@/app/lib/data";
 
 export function Banner() {
   return (

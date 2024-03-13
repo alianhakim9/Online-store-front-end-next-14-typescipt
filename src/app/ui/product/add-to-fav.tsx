@@ -42,9 +42,10 @@ export function AddToFavouriteButton({ product }: IAddToFav) {
   };
   return (
     <Button
-      className="rounded-lg hover:shadow-md"
+      className="rounded-lg hover:shadow-md w-full"
       variant="destructive"
       onClick={handleAddFavProduct}
+      size="sm"
     >
       Hapus Produk Favorit
     </Button>

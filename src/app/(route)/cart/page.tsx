@@ -1,7 +1,9 @@
+import { CartSkeleton } from "@/app/ui/cart/skeleton";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
+import { Suspense } from "react";
 
-const CartPage = dynamic(() => import("@/app/ui/cart/CartPage"), {
+const CartTable = dynamic(() => import("@/app/ui/cart/table"), {
   ssr: false,
 });
 
@@ -11,5 +13,14 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  return <CartPage />;
+  return (
+    <Suspense fallback={<CartSkeleton />}>
+      <div>
+        <h3 className="text-3xl mb-5 font-semibold text-gray-600 text-center container">
+          Halaman Keranjang
+        </h3>
+        <CartTable />
+      </div>
+    </Suspense>
+  );
 }

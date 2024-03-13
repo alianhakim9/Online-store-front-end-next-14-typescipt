@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import { cartApi } from "./rtk/cartApi";
-import carts_slice from "./slices/carts_slice";
-import paymentSlice from "./slices/paymentSlice";
-import products_slice from "./slices/products_slice";
-import { productApi } from "./rtk/productApi";
+import { cartApi } from "@/app/lib/redux/rtk/cartApi";
+import carts_slice from "@/app/lib/redux/slices/carts_slice";
+import paymentSlice from "@/app/lib/redux/slices/paymentSlice";
+import products_slice from "@/app/lib/redux/slices/products_slice";
+import { productApi } from "@/app/lib/redux/rtk/productApi";
 
 const store = configureStore({
   reducer: {

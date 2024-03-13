@@ -1,6 +1,6 @@
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { AiOutlineLoading } from "react-icons/ai";
-import { Button } from "../../components/ui/button";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   onClick?: () => void;

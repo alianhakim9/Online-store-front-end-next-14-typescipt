@@ -11,9 +11,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 interface IAddToCart {
   product: Product;
+  quantity?: number;
+  outline?: boolean;
 }
 
-export function AddToCartButton({ product }: IAddToCart) {
+export function AddToCartButton({ product, quantity, outline }: IAddToCart) {
   const dispatch = useDispatch();
   const { data: session } = useSession();
   const userId = session?.user.userId.toString();
@@ -22,8 +24,10 @@ export function AddToCartButton({ product }: IAddToCart) {
   const handleAddToCart = useCallback(() => {
     const cartItem: CartItem = {
       product: product,
-      quantity: 1,
-      subtotal: Number(product.price),
+      quantity: quantity ? quantity : 1,
+      subtotal: quantity
+        ? Number(product.price) * quantity
+        : Number(product.price),
       userId,
     };
     dispatch(addToCart(cartItem));
@@ -42,12 +46,14 @@ export function AddToCartButton({ product }: IAddToCart) {
       }
       showSonnerToast("Produk ditambahkan ke keranjang", cartItem.product.name);
     }
-  }, [cartItems, dispatch, product, userId]);
+  }, [cartItems, dispatch, product, quantity, userId]);
 
   return (
     <Button
-      className="rounded-lg hover:shadow-md text-sm"
+      className="rounded-lg hover:shadow-md text-sm w-full"
       onClick={handleAddToCart}
+      size="sm"
+      variant={outline ? "outline" : "default"}
     >
       Tambah keranjang
     </Button>

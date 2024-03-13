@@ -1,18 +1,26 @@
-import { fetchCategories } from "@/app/lib/data";
-import EmptyState from "../EmptyState";
-import { Category } from "@/app/lib/definitions";
+"use client";
 
-export async function SideCategory() {
-  const categories = await fetchCategories();
+import { Category } from "@/app/lib/definitions";
+import EmptyState from "@/app/ui/empty-state";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
+interface Props {
+  categories: Category[];
+}
+
+export function SideCategory({ categories }: Props) {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
   const getProductsByCategory = async (categoryId?: string) => {
-    // if (categoryId) {
-    //   const filteredProducts = products.data.filter(
-    //     (item) => item.category.id === categoryId
-    //   );
-    //   setCurrentProducts(filteredProducts);
-    // } else {
-    //   setCurrentProducts(products.data);
-    // }
+    const params = new URLSearchParams(searchParams);
+    if (categoryId) {
+      params.set("category", categoryId);
+    } else {
+      params.delete("category");
+    }
+    replace(`${pathname}?${params.toString()}`);
   };
 
   return (
@@ -23,13 +31,17 @@ export async function SideCategory() {
           <EmptyState title="Category still empty" mode="text" />
         )}
         <ul>
-          <li className="list-disc list-inside text-sm underline hover:cursor-pointer">
+          <li
+            className="list-disc list-inside text-sm underline hover:cursor-pointer"
+            onClick={() => replace("/home")}
+          >
             Semua kategori
           </li>
           {categories.map((item: Category) => (
             <li
               key={item.id}
               className="list-disc list-inside text-sm underline hover:cursor-pointer"
+              onClick={() => getProductsByCategory(item.id)}
             >
               {item.name}
             </li>

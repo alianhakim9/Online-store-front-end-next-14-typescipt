@@ -1,7 +1,11 @@
-import { Input } from "@/components/ui/input";
 import { Brand } from "@/app/ui/navbar/brand";
-import { NavbarContent } from "@/app/ui/navbar/navbar-content";
 import { TopNavbar } from "@/app/ui/navbar/top-navbar";
+import dynamic from "next/dynamic";
+import { SearchProduct } from "@/app/ui/product/search";
+
+const NavbarContent = dynamic(() => import("@/app/ui/navbar/navbar-content"), {
+  ssr: false,
+});
 
 export function Navbar() {
   return (
@@ -9,7 +13,7 @@ export function Navbar() {
       <TopNavbar />
       <div className="container flex justify-between items-center gap-5 p-5 ">
         <Brand />
-        <Input placeholder="Cari Produk..." />
+        <SearchProduct />
         <NavbarContent />
       </div>
     </div>

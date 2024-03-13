@@ -4,9 +4,9 @@ import { convertToRupiah } from "@/app/lib/utils";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Session } from "next-auth";
 import Link from "next/link";
-import ImageLoad from "../ImageLoad";
-import { AddToCartButton } from "./add-to-cart";
-import { AddToFavouriteButton } from "./add-to-fav";
+import ImageLoad from "@/app/ui/image-load";
+import { AddToCartButton } from "@/app/ui/product/add-to-cart";
+import { AddToFavouriteButton } from "@/app/ui/product/add-to-fav";
 
 interface IProductProps {
   product: Product;
@@ -46,7 +46,7 @@ const ProductCard = ({ product, showDelFavBtn }: IProductProps) => {
       </CardHeader>
       <CardFooter
         className={`${
-          showDelFavBtn ? "flex flex-col gap-2 w-full" : "self-center "
+          showDelFavBtn ? "flex flex-col gap-2 w-full" : "self-center w-full"
         }`}
       >
         <AddToCartButton product={product} />

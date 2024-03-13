@@ -3,25 +3,26 @@
 import { guestNavbarMenus, isLoginNavbarMenus } from "@/app/lib/menus";
 import { onSignOut } from "@/app/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { IoLogOut, IoNotificationsOutline } from "react-icons/io5";
+import { CartBadge } from "@/app/ui/navbar/cart-badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@radix-ui/react-popover";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { IoLogOut, IoNotificationsOutline } from "react-icons/io5";
-import { CartBadge } from "./cart-badge";
+} from "@/components/ui/popover";
 
-export function NavbarContent() {
+export default function NavbarContent() {
   const router = useRouter();
   const { data: session } = useSession();
 

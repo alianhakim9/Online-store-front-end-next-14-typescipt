@@ -5,7 +5,7 @@ import {
   reduceQuantity,
 } from "@/app/lib/redux/slices/carts_slice";
 import { useDispatch } from "react-redux";
-import { Button } from "../../components/ui/button";
+import { Button } from "@/components/ui/button";
 
 interface IQuantityBtn {
   onDecrease?: () => void;

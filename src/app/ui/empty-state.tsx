@@ -1,4 +1,4 @@
-import ImageLoad from "./ImageLoad";
+import ImageLoad from "@/app/ui/image-load";
 
 interface IEmptyState {
   title: string;

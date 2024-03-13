@@ -1,18 +1,18 @@
 "use client";
 
-import ImageLoad from "@/app/ui/ImageLoad";
+import ImageLoad from "@/app/ui/image-load";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { setTransactionToken } from "@/app/lib/redux/slices/paymentSlice";
 import { RootState } from "@/app/lib/redux/store";
-import { CartItem } from "@/types/cart";
 import { API_BASE_URL } from "@/app/lib/constants";
-import { convertToRupiah } from "@/utils/helper";
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { CartItem } from "@/app/lib/definitions";
+import { convertToRupiah } from "@/app/lib/utils";
 
 interface IPaymentPage {
   tsToken?: string;

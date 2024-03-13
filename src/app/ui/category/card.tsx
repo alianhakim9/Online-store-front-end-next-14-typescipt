@@ -1,5 +1,5 @@
-import { Category } from "@/types/local";
-import { Card } from "../../../components/ui/card";
+import { Category } from "@/app/lib/definitions";
+import { Card } from "@/components/ui/card";
 
 interface ICategory {
   category: Category;

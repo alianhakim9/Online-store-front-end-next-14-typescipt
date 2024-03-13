@@ -1,9 +1,9 @@
-import ProductDetail from "@/app/ui/product/ProductDetailPage";
-import { getProductById } from "@/get-data/getProducts";
-import { Suspense } from "react";
-import Loading from "./loading";
+import { fetchProductById } from "@/app/lib/data";
+import { ProductDetail } from "@/app/ui/product/product-detail";
+import ProductDetailSkeleton from "@/app/ui/skeletons/ProductDetailSkeleton";
 
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Detail produk",
@@ -17,12 +17,10 @@ export default async function Page({
   params: { productId: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const productId = params.productId;
-  const product = await getProductById(productId);
-
+  const product = await fetchProductById(params.productId);
   return (
-    <Suspense fallback={<Loading />}>
-      <ProductDetail product={product.data} />
+    <Suspense fallback={<ProductDetailSkeleton />}>
+      <ProductDetail product={product} />
     </Suspense>
   );
 }

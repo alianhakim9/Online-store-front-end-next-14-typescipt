@@ -1,4 +1,4 @@
-import ImageLoad from "@/app/ui/ImageLoad";
+import ImageLoad from "@/app/ui/image-load";
 
 export default function NotFound() {
   return (
