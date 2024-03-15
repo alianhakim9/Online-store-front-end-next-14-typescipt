@@ -1,12 +1,13 @@
 import { API_BASE_URL } from "@/app/lib/constants";
 import { Product } from "@/app/lib/definitions";
 import { convertToRupiah } from "@/app/lib/utils";
+import ImageLoad from "@/app/ui/image-load";
+import { AddToCartButton } from "@/app/ui/product/add-to-cart";
+import { DeleteFavProductButton } from "@/app/ui/product/delete-fav-product";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Session } from "next-auth";
 import Link from "next/link";
-import ImageLoad from "@/app/ui/image-load";
-import { AddToCartButton } from "@/app/ui/product/add-to-cart";
-import { AddToFavouriteButton } from "@/app/ui/product/add-to-fav";
+import { AddToFavButton } from "@/app/ui/product/add-to-fav";
 
 interface IProductProps {
   product: Product;
@@ -15,7 +16,7 @@ interface IProductProps {
   showDelFavBtn?: boolean;
 }
 
-const ProductCard = ({ product, showDelFavBtn }: IProductProps) => {
+const ProductCard = ({ product, showDelFavBtn, showFavBtn }: IProductProps) => {
   const thumbnail = product.images[0].formats.thumbnail.url;
 
   return (
@@ -24,7 +25,7 @@ const ProductCard = ({ product, showDelFavBtn }: IProductProps) => {
         <div>
           <div className="relative">
             <ImageLoad
-              className="h-40 w-40 mx-auto"
+              className="h-20 md:h-40 w-20 md:w-40 mx-auto"
               src={
                 thumbnail
                   ? `${API_BASE_URL}${thumbnail}`
@@ -33,6 +34,11 @@ const ProductCard = ({ product, showDelFavBtn }: IProductProps) => {
               alt={product.name}
             />
           </div>
+          {showFavBtn && (
+            <div className="flex items-end justify-end w-full">
+              <AddToFavButton product={product} />
+            </div>
+          )}
           <p className="font-semibold text-sm mt-2">
             {convertToRupiah(Number(product.price))}
           </p>
@@ -46,11 +52,13 @@ const ProductCard = ({ product, showDelFavBtn }: IProductProps) => {
       </CardHeader>
       <CardFooter
         className={`${
-          showDelFavBtn ? "flex flex-col gap-2 w-full" : "self-center w-full"
+          showDelFavBtn
+            ? "flex flex-row md:flex-col gap-2 w-full"
+            : "self-center w-full"
         }`}
       >
         <AddToCartButton product={product} />
-        {showDelFavBtn && <AddToFavouriteButton product={product} />}
+        {showDelFavBtn && <DeleteFavProductButton product={product} />}
       </CardFooter>
     </Card>
   );

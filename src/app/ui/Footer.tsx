@@ -11,8 +11,8 @@ import { footerMenus } from "@/app/lib/menus";
 
 const Footer = () => {
   return (
-    <div className="bg-lime-950 p-20 h-min-[200px]">
-      <div className="container text-white grid grid-cols-4">
+    <div className="bg-lime-950 py-10 md:p-20 h-min-[200px]">
+      <div className="container text-white grid grid-cols-1 md:grid-cols-4">
         <div>
           <h1 className="uppercase text-2xl font-semibold">Online Store</h1>
           {footerMenus.items1.map((item, index) => (
@@ -93,7 +93,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div>
+        <div className="hidden md:block">
           <ImageLoad
             className="h-96 w-96"
             src="/images/footer-img.png"

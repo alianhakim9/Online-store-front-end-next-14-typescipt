@@ -76,7 +76,7 @@ export default function CartButton() {
   };
 
   return (
-    <div className="flex items-end justify-end mt-5 flex-col gap-3">
+    <div className="flex items-start md:items-end justify-end mt-5 flex-col gap-3">
       <p className="font-bold">Total : {convertToRupiah(totalPrice)}</p>
       <div className="flex gap-1">
         <Button variant="outline" onClick={() => router.push("/home")}>

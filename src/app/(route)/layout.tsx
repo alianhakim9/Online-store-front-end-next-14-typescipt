@@ -6,11 +6,11 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import { poppins } from "@/app/ui/fonts";
-import { Navbar } from "@/app/ui/navbar/navbar";
 import GlobalProvider from "@/app/providers/global-provider";
 import { StoreProvider } from "@/app/providers/store-provider";
 import { authOptions } from "./api/auth/[...nextauth]/auth-options";
 import Footer from "@/app/ui/footer";
+import Navbar from "@/app/ui/navbar/navbar";
 
 export const metadata: Metadata = {
   title: {
@@ -34,7 +34,9 @@ export default async function RootLayout({
             <main>
               <div className={`flex flex-col justify-between h-screen`}>
                 <Navbar />
-                <div className="flex-1 mt-32 mb-24 container">{children}</div>
+                <div className="flex-1 mt-32 mb-24 mx-5 md:container md:mx-auto">
+                  {children}
+                </div>
                 <Footer />
               </div>
             </main>

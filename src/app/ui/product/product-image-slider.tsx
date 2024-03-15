@@ -25,7 +25,7 @@ export function ProductImageSlider({ product }: { product: Product }) {
                   thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
               }}
               modules={[FreeMode, Navigation, Thumbs]}
-              className="rounded-lg max-w-lg"
+              className="rounded-lg w-full md:max-w-lg"
               centeredSlides={true}
             >
               {productImages.map((image, index) => (
@@ -33,40 +33,42 @@ export function ProductImageSlider({ product }: { product: Product }) {
                   <ImageLoad
                     src={`${API_BASE_URL}${image.url}`}
                     alt={image.url}
-                    className="w-96 h-96 mx-auto"
+                    className="w-52 h-52 md:w-96 md:h-96 mx-auto"
                   />
                 </SwiperSlide>
               ))}
             </Swiper>
             {/* Thumbnail */}
-            <Swiper
-              onSwiper={setThumbsSwiper}
-              loop={true}
-              spaceBetween={1}
-              slidesPerView={4}
-              freeMode={true}
-              watchSlidesProgress={true}
-              modules={[FreeMode, Navigation, Thumbs]}
-              className="thumbs rounded-lg w-full"
-            >
-              {productImages.map((image, index) => (
-                <SwiperSlide key={index}>
-                  <button>
-                    <ImageLoad
-                      src={`${API_BASE_URL}${image.url}`}
-                      alt={image.url}
-                      className="w-20 h-20"
-                    />
-                  </button>
-                </SwiperSlide>
-              ))}
-            </Swiper>
+            <div className="hidden md:block">
+              <Swiper
+                onSwiper={setThumbsSwiper}
+                loop={true}
+                spaceBetween={1}
+                slidesPerView={4}
+                freeMode={true}
+                watchSlidesProgress={true}
+                modules={[FreeMode, Navigation, Thumbs]}
+                className="thumbs rounded-lg w-full"
+              >
+                {productImages.map((image, index) => (
+                  <SwiperSlide key={index}>
+                    <button>
+                      <ImageLoad
+                        src={`${API_BASE_URL}${image.url}`}
+                        alt={image.url}
+                        className="w-20 h-20"
+                      />
+                    </button>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
           </div>
         ) : (
           <div>
             <ImageLoad
               src={`${API_BASE_URL}${product.images[0].url}`}
-              className="h-96 w-96"
+              className="w-52 h-52 md:h-96 md:w-96"
               alt={product.name}
             />
           </div>

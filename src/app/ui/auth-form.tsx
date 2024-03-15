@@ -113,10 +113,10 @@ const AuthForm = ({ isSignUp, signUpUrl, fromAdmin }: IAuthFormProps) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-2 w-1/2"
+        className="flex flex-col gap-2 w-full md:w-1/2"
       >
         {isSignUp && (
-          <div className="flex gap-2 justify-between">
+          <div className="flex flex-col md:flex-row gap-2 justify-between">
             <FormField
               control={form.control}
               name="firstname"

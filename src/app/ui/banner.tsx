@@ -21,7 +21,7 @@ export function Banner() {
       {carousels.map((carousel, index) => (
         <SwiperSlide key={index}>
           <ImageLoad
-            className="h-[500px] w-full"
+            className="h-[200px] md:h-[500px] w-full"
             src={carousel}
             alt="banner-img rounded-none"
           />

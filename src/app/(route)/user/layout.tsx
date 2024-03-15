@@ -38,7 +38,7 @@ export default async function UserLayout({
           </SidebarAccordion>
           <div className="mt-2 flex flex-col gap-4">
             <Link
-              href="/user/address"
+              href="/user/orders"
               className="text-sm font-medium flex items-center gap-2"
             >
               <MdEventNote /> Pesanan Saya
@@ -53,7 +53,7 @@ export default async function UserLayout({
         </div>
         <Separator orientation="vertical" />
       </div>
-      <div className="rounded-lg bg-zinc-50 p-4 w-full">{children}</div>
+      <div className="rounded-lg p-4 w-full">{children}</div>
     </div>
   );
 }

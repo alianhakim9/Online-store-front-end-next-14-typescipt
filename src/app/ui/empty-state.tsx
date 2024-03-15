@@ -1,11 +1,13 @@
 import ImageLoad from "@/app/ui/image-load";
+import React from "react";
 
 interface IEmptyState {
   title: string;
   mode: "graphic" | "text";
+  children?: React.ReactNode;
 }
 
-const EmptyState = ({ title, mode }: IEmptyState) => {
+const EmptyState = ({ title, mode, children }: IEmptyState) => {
   return (
     <div>
       {mode === "graphic" ? (
@@ -20,6 +22,7 @@ const EmptyState = ({ title, mode }: IEmptyState) => {
       ) : (
         <p className="text-sm">{title}</p>
       )}
+      {children}
     </div>
   );
 };

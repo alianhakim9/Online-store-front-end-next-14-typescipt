@@ -18,18 +18,20 @@ export function ProductDetail({ product }: IProductDetail) {
   const [quantity, setQuantity] = useState(1);
 
   return (
-    <div className="flex gap-10 mt-10 container">
+    <div className="flex gap-5 md:gap-10 mt-10 container flex-col md:flex-row">
       <div>
         <ProductImageSlider product={product} />
-        <SharedProductButton />
+        <SharedProductButton className="hidden md:block" />
       </div>
       <div className="flex flex-col gap-2 w-full">
-        <h3 className="font-bold text-3xl">{product.name}</h3>
+        <h3 className="font-bold text-2xl md:text-3xl">{product.name}</h3>
         <hr />
         <p className="text-2xl text-green-700 font-semibold">
           {convertToRupiah(Number(product.price))}
         </p>
-        <p>{product.description}</p>
+        <p className="text-sm md:text-balance text-justify">
+          {product.description}
+        </p>
         <p
           className={`${
             product.stock < 4 ? "text-red-500" : "text-black"
@@ -53,6 +55,7 @@ export function ProductDetail({ product }: IProductDetail) {
             Beli produk ini
           </Button>
         </div>
+        <SharedProductButton className="block md:hidden" />
       </div>
     </div>
   );

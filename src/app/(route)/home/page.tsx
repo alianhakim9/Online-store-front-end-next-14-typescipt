@@ -1,5 +1,6 @@
 import { fetchCategories } from "@/app/lib/data";
 import { Banner } from "@/app/ui/banner";
+import MobileCategory from "@/app/ui/category/mobile-category";
 import { SideCategory } from "@/app/ui/category/side-categories";
 import { SideCategorySkeleton } from "@/app/ui/category/skeleton";
 import { AllProduct } from "@/app/ui/product/all-product";
@@ -24,11 +25,14 @@ export default async function Page({
   return (
     <div className="flex flex-col gap-2">
       <Banner />
-      <div className="flex mt-5 gap-2">
-        <div>
+      <div className="flex flex-col md:flex-row mt-5 gap-2">
+        <div className="hidden md:block">
           <Suspense fallback={<SideCategorySkeleton />}>
             <SideCategory categories={categories} />
           </Suspense>
+        </div>
+        <div className="block md:hidden">
+          <MobileCategory categories={categories} />
         </div>
         <div className="flex-grow">
           <Suspense fallback={<ProductSkeleton />}>

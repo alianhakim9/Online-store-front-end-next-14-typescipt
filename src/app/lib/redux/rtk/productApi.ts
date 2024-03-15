@@ -31,10 +31,13 @@ export const addFavProduct = createAsyncThunk(
         product: data.productId,
       },
     };
-    const response: AxiosResponse = await axios
+    const response: any = await axios
       .post(`${process.env.NEXT_PUBLIC_API_URL}/favourites`, favProduct)
       .then((response: AxiosResponse) => {
-        return response.data;
+        return {
+          response: response.data,
+          productId: data.productId,
+        };
       })
       .catch((err: AxiosError) => console.log(err.response));
     return response;

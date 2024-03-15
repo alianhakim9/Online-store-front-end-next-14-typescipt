@@ -1,3 +1,4 @@
+import CartMobile from "@/app/ui/cart/cart-mobile";
 import { CartSkeleton } from "@/app/ui/cart/skeleton";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
@@ -16,10 +17,15 @@ export default async function Page() {
   return (
     <Suspense fallback={<CartSkeleton />}>
       <div>
-        <h3 className="text-3xl mb-5 font-semibold text-gray-600 text-center container">
+        <h3 className="text-2xl md:text-3xl mb-5 font-semibold  text-center">
           Halaman Keranjang
         </h3>
-        <CartTable />
+        <div className="hidden md:block">
+          <CartTable />
+        </div>
+        <div className="block md:hidden mt-5">
+          <CartMobile />
+        </div>
       </div>
     </Suspense>
   );

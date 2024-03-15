@@ -6,7 +6,7 @@ export function ProductSkeleton() {
     skeletons.push(<ProductCardSkeleton key={i} />);
   }
   if (skeletons.length > 1) {
-    return <div className="grid grid-cols-5 gap-4 w-full">{skeletons}</div>;
+    return <div className="grid grid-cols-2 md:grid-cols-5 gap-4 w-full">{skeletons}</div>;
   }
 }
 

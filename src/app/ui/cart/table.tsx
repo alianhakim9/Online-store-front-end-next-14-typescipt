@@ -17,8 +17,8 @@ import {
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useSelector } from "react-redux";
-import EmptyCart from "./empy-cart";
-import CartButton from "./button";
+import EmptyCart from "@/app/ui/cart/empy-cart";
+import CartButton from "@/app/ui/cart/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function CartTable() {
@@ -32,8 +32,8 @@ export default function CartTable() {
         <EmptyCart />
       ) : (
         <div>
-          <ScrollArea className="h-[40vh]">
-            <Table>
+          <ScrollArea className="h-[40vh] w-full md:w-auto">
+            <Table className="overflow-y-auto">
               <TableHeader>
                 <TableRow>
                   <TableHead className="font-bold"></TableHead>

@@ -94,6 +94,12 @@ export type Quantity = {
   count: number;
 };
 
+export type Order = {
+  status: string;
+  order_id: string;
+  total_price: number;
+};
+
 declare const window: Window &
   typeof globalThis & {
     snap: {};

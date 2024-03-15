@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function SignUp() {
   return (
-    <div className="grid grid-cols-2 justify-between items-center">
+    <div className="grid grid-cols-1 md:grid-cols-2 justify-between items-start md:items-center">
       <div>
         <div className="mb-5">
           <h3 className="text-lime-950 font-bold text-5xl">
@@ -23,7 +23,7 @@ export default function SignUp() {
         <AuthForm isSignUp />
       </div>
 
-      <div>
+      <div className="hidden md:flex">
         <ImageLoad
           className="h-96 w-full"
           src="/images/sign-up-img.png"

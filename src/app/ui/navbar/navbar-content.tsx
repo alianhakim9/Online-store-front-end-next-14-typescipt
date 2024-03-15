@@ -1,30 +1,34 @@
 "use client";
 
-import { guestNavbarMenus, isLoginNavbarMenus } from "@/app/lib/menus";
-import { onSignOut } from "@/app/lib/utils";
+import { isLoginNavbarMenus } from "@/app/lib/menus";
 import { Button } from "@/components/ui/button";
 
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { IoLogOut, IoNotificationsOutline } from "react-icons/io5";
 import { CartBadge } from "@/app/ui/navbar/cart-badge";
+import LogoutButton from "@/app/ui/navbar/logout";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Session } from "next-auth";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { IoNotificationsOutline } from "react-icons/io5";
+import AuthButton from "@/app/ui/navbar/auth-btn";
 
-export default function NavbarContent() {
+interface Props {
+  session?: Session | null;
+}
+
+export default function NavbarContent({ session }: Props) {
   const router = useRouter();
-  const { data: session } = useSession();
 
   return (
     <div className="flex items-center gap-2 justify-end">
@@ -45,21 +49,16 @@ export default function NavbarContent() {
             <Button
               variant="ghost"
               size="icon"
-              className="rounded-full"
+              className={`rounded-full ${
+                menu.title === "Favorit" && "hidden md:block"
+              }`}
               key={index}
               onClick={() => router.push(menu.url)}
             >
               {<menu.icon size={24} />}
             </Button>
           ))}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => onSignOut()}
-            className="rounded-full"
-          >
-            <IoLogOut size={24} />
-          </Button>
+          <LogoutButton className="hidden md:block" />
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Avatar>
@@ -78,27 +77,13 @@ export default function NavbarContent() {
                 <Link href="/user/account">Akun</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link href="/user/account">Pesanan saya</Link>
+                <Link href="/user/orders">Pesanan saya</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </>
       ) : (
-        guestNavbarMenus.map((menu, index) => (
-          <div
-            key={index}
-            className="flex items-center justify-end w-min-[200px]"
-          >
-            <Button
-              variant={menu.variant ? "default" : "outline"}
-              size="sm"
-              onClick={() => router.push(menu.url)}
-              className="rounded-lg"
-            >
-              {menu.title}
-            </Button>
-          </div>
-        ))
+        <AuthButton className="items-center justify-end w-min-[200px] hidden md:flex" />
       )}
     </div>
   );

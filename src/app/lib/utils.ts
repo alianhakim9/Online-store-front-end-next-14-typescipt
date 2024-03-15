@@ -83,3 +83,7 @@ export function splitFullName(fullName?: string | null | undefined): {
     };
   }
 }
+
+export function setCookies(key: string, value: any) {
+  Cookies.set(key, JSON.stringify(value));
+}

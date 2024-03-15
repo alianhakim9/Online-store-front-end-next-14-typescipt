@@ -1,4 +1,4 @@
-import { Category, Product } from "@/app/lib/definitions";
+import { Category, Order, Product } from "@/app/lib/definitions";
 import axios, { AxiosResponse } from "axios";
 import { unstable_noStore as noStore } from "next/cache";
 
@@ -13,11 +13,9 @@ export async function fetchProducts(category?: string, query?: string) {
   if (category) {
     url = `${process.env.NEXT_PUBLIC_API_URL}/products?populate=deep&filters[category]=${category}`;
   }
-
   if (query) {
     url = `${process.env.NEXT_PUBLIC_API_URL}/products?filters[name][$contains]=${query}&populate=deep`;
   }
-
   noStore();
   try {
     const response = await axios.get(url).then((response: AxiosResponse) => {
@@ -53,6 +51,36 @@ export async function fetchProductById(id: string) {
       });
     const product = response.data as Product;
     return product;
+  } catch (error) {
+    throw new Error("Failed to fetch product.");
+  }
+}
+
+export async function fetchOrderByUserId(userId: string) {
+  try {
+    const response = await axios
+      .get(`${process.env.NEXT_PUBLIC_API_URL}/orders?filters[user]=${userId}`)
+      .then((response: AxiosResponse) => {
+        return response.data;
+      });
+    const orders = response.data as Order[];
+    return orders;
+  } catch (error) {
+    throw new Error("Failed to fetch order");
+  }
+}
+
+export async function fetchFilteredOrder(status: string, userId: string) {
+  try {
+    const response = await axios
+      .get(
+        `${process.env.NEXT_PUBLIC_API_URL}/orders?filters[user]=${userId}&filters[status][$contains]=${status}`
+      )
+      .then((response: AxiosResponse) => {
+        return response.data;
+      });
+    const orders = response.data as Order[];
+    return orders;
   } catch (error) {
     throw new Error("Failed to fetch product.");
   }

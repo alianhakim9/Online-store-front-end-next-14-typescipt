@@ -3,10 +3,13 @@ import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { addCartItem } from "@/app/lib/redux/rtk/cartApi";
 import { CartItem, Carts } from "@/app/lib/definitions";
+import { setCookies } from "@/app/lib/utils";
 
-const initialState: Carts = Cookies.get("carts")
+const COOKIE_KEY = "carts";
+
+const initialState: Carts = Cookies.get(COOKIE_KEY)
   ? {
-      ...JSON.parse(Cookies.get("carts") || "[]"),
+      ...JSON.parse(Cookies.get(COOKIE_KEY) || "[]"),
       loading: true,
     }
   : {
@@ -28,7 +31,7 @@ const cartsSlice = createSlice({
         return cartItem;
       });
       state.totalPrice = total;
-      Cookies.set("carts", JSON.stringify(state));
+      setCookies(COOKIE_KEY, state);
     },
     addToCart: (state, action) => {
       const cartItem = action.payload as CartItem;
@@ -53,13 +56,10 @@ const cartsSlice = createSlice({
         total += item.subtotal;
       });
       state.totalPrice = total;
-      Cookies.set(
-        "carts",
-        JSON.stringify({
-          cartItems: state.cartItems,
-          totalPrice: state.totalPrice,
-        })
-      );
+      setCookies(COOKIE_KEY, {
+        cartItems: state.cartItems,
+        totalPrice: state.totalPrice,
+      });
     },
     removeCartItem: (state, action) => {
       const userId = action.payload.userId;
@@ -77,7 +77,7 @@ const cartsSlice = createSlice({
       });
       state.totalPrice = total;
       state.itemIsExist = false;
-      Cookies.set("carts", JSON.stringify(state));
+      setCookies(COOKIE_KEY, state);
     },
     addQuantity: (state, action) => {
       const userId = action.payload.userId;
@@ -109,7 +109,7 @@ const cartsSlice = createSlice({
         return item;
       });
       state.totalPrice = total;
-      Cookies.set("carts", JSON.stringify(state));
+      setCookies(COOKIE_KEY, state);
     },
     reduceQuantity: (state, action) => {
       const userId = action.payload.userId;
@@ -139,7 +139,7 @@ const cartsSlice = createSlice({
         return item;
       });
       state.totalPrice = total;
-      Cookies.set("carts", JSON.stringify(state));
+      setCookies(COOKIE_KEY, state);
     },
     hideLoading: (state, action) => {
       state.loading = false;
@@ -163,7 +163,7 @@ const cartsSlice = createSlice({
         return newItem;
       });
       state.totalPrice = total;
-      Cookies.set("carts", JSON.stringify(state));
+      setCookies(COOKIE_KEY, state);
     });
   },
 });
