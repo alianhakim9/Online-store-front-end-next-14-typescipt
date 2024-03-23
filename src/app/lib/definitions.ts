@@ -21,6 +21,7 @@ export type Product = {
   weight: number;
   idFavourite?: string;
   isFavourite?: boolean;
+  imgUrl: string;
 };
 
 export type User = {

@@ -3,6 +3,7 @@
 import { Category } from "@/app/lib/definitions";
 import EmptyState from "@/app/ui/empty-state";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import PaginationControl from "./pagination-control";
 
 interface Props {
   categories: Category[];
@@ -13,10 +14,14 @@ export function SideCategory({ categories }: Props) {
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  const getProductsByCategory = async (categoryId?: string) => {
+  const getProductsByCategory = async (categoryName?: string) => {
     const params = new URLSearchParams(searchParams);
-    if (categoryId) {
-      params.set("category", categoryId);
+    const page = searchParams.get("page");
+    if (categoryName) {
+      params.set("category", categoryName);
+      if (page) {
+        params.set("page", "1");
+      }
     } else {
       params.delete("category");
     }
@@ -41,7 +46,7 @@ export function SideCategory({ categories }: Props) {
             <li
               key={item.id}
               className="list-disc list-inside text-sm underline hover:cursor-pointer"
-              onClick={() => getProductsByCategory(item.id)}
+              onClick={() => getProductsByCategory(item.name)}
             >
               {item.name}
             </li>

@@ -6,7 +6,9 @@ import { SideCategorySkeleton } from "@/app/ui/category/skeleton";
 import { AllProduct } from "@/app/ui/product/all-product";
 import { ProductSkeleton } from "@/app/ui/product/product-skeleton";
 import { Metadata } from "next";
+import { getServerSession } from "next-auth";
 import { Suspense } from "react";
+import { authOptions } from "@/app/(route)/api/auth/[...nextauth]/auth-options";
 
 export const metadata: Metadata = {
   title: "Halaman Utama",
@@ -18,10 +20,14 @@ export default async function Page({
 }: {
   searchParams?: {
     category?: string;
+    page?: string;
   };
 }) {
   const category = searchParams?.category || "";
+  const page = searchParams?.page || "1";
   const categories = await fetchCategories();
+  const session = await getServerSession(authOptions);
+
   return (
     <div className="flex flex-col gap-2">
       <Banner />
@@ -36,7 +42,7 @@ export default async function Page({
         </div>
         <div className="flex-grow">
           <Suspense fallback={<ProductSkeleton />}>
-            <AllProduct category={category} />
+            <AllProduct category={category} session={session} page={page} />
           </Suspense>
         </div>
       </div>

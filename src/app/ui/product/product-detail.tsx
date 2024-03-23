@@ -29,9 +29,7 @@ export function ProductDetail({ product }: IProductDetail) {
         <p className="text-2xl text-green-700 font-semibold">
           {convertToRupiah(Number(product.price))}
         </p>
-        <p className="text-sm md:text-balance text-justify">
-          {product.description}
-        </p>
+        <p className="text-sm md:text-balance">{product.description}</p>
         <p
           className={`${
             product.stock < 4 ? "text-red-500" : "text-black"

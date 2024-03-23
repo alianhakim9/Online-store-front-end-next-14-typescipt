@@ -1,6 +1,6 @@
+import { MotionButton } from "@/app/ui/motion-button";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { AiOutlineLoading } from "react-icons/ai";
-import { Button } from "@/components/ui/button";
 
 interface Props {
   onClick?: () => void;
@@ -18,7 +18,7 @@ const LoadingButton = ({
   className,
 }: Props) => {
   return (
-    <Button
+    <MotionButton
       variant="default"
       onClick={onClick}
       disabled={isLoading}
@@ -28,7 +28,7 @@ const LoadingButton = ({
       {title}
       {isLoading && <AiOutlineLoading className="animate-spin ml-2" />}
       {title === "Checkout?" && <ArrowRightIcon className="ml-2" />}
-    </Button>
+    </MotionButton>
   );
 };
 

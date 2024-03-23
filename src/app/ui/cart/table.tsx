@@ -53,7 +53,11 @@ export default function CartTable() {
                       <TableCell className="max-w-[100px]">
                         <div className="h-[100px] w-[100px] relative">
                           <ImageLoad
-                            src={`${API_BASE_URL}${item.product.images[0].url}`}
+                            src={
+                              item.product.images
+                                ? `${API_BASE_URL}${item.product.images[0].url}`
+                                : item.product.imgUrl
+                            }
                             alt={item.product.name}
                             className="w-24 h-24"
                           />

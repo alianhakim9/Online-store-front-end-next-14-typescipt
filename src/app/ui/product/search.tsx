@@ -11,9 +11,9 @@ export function SearchProduct() {
 
   const handleSearch = useDebouncedCallback((term: string) => {
     const params = new URLSearchParams(searchParams);
-    console.log(term);
     if (term) {
       params.set("query", term);
+      params.set("page", "1");
       replace(`/products?${params.toString()}`);
     } else {
       params.delete("query");

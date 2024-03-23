@@ -5,7 +5,7 @@ import { addFavProduct } from "@/app/lib/redux/rtk/productApi";
 import { addToFavourite } from "@/app/lib/redux/slices/products_slice";
 import { RootState } from "@/app/lib/redux/store";
 import { showSonnerToast } from "@/app/lib/utils";
-import { Button } from "@/components/ui/button";
+import { MotionButton } from "@/app/ui/motion-button";
 import { useSession } from "next-auth/react";
 import { BiHeart } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,13 +45,16 @@ export function AddToFavButton({ product }: Props) {
     }
   };
   return (
-    <Button
+    <MotionButton
       size="icon"
       variant="ghost"
       onClick={handleAddToFavourite}
       className="rounded-full"
+      whileTap={{
+        scale: 0.9,
+      }}
     >
       <BiHeart size={24} />
-    </Button>
+    </MotionButton>
   );
 }

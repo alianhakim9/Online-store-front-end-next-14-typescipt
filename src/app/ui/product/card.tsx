@@ -16,8 +16,15 @@ interface IProductProps {
   showDelFavBtn?: boolean;
 }
 
-const ProductCard = ({ product, showDelFavBtn, showFavBtn }: IProductProps) => {
-  const thumbnail = product.images[0].formats.thumbnail.url;
+const ProductCard = ({
+  product,
+  showDelFavBtn,
+  showFavBtn,
+  session,
+}: IProductProps) => {
+  const thumbnail = product.images
+    ? `${API_BASE_URL}${product.images[0].formats.thumbnail.url}`
+    : product.imgUrl;
 
   return (
     <Card className="flex flex-col justify-between">
@@ -26,15 +33,11 @@ const ProductCard = ({ product, showDelFavBtn, showFavBtn }: IProductProps) => {
           <div className="relative">
             <ImageLoad
               className="h-20 md:h-40 w-20 md:w-40 mx-auto"
-              src={
-                thumbnail
-                  ? `${API_BASE_URL}${thumbnail}`
-                  : "/images/placeholder.jpg"
-              }
+              src={thumbnail ? `${thumbnail}` : "/images/placeholder.jpg"}
               alt={product.name}
             />
           </div>
-          {showFavBtn && (
+          {session && showFavBtn && (
             <div className="flex items-end justify-end w-full">
               <AddToFavButton product={product} />
             </div>
@@ -58,7 +61,9 @@ const ProductCard = ({ product, showDelFavBtn, showFavBtn }: IProductProps) => {
         }`}
       >
         <AddToCartButton product={product} />
-        {showDelFavBtn && <DeleteFavProductButton product={product} />}
+        {session && showDelFavBtn && (
+          <DeleteFavProductButton product={product} />
+        )}
       </CardFooter>
     </Card>
   );

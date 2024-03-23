@@ -5,7 +5,7 @@ import { addCartItem } from "@/app/lib/redux/rtk/cartApi";
 import { addToCart } from "@/app/lib/redux/slices/carts_slice";
 import { RootState } from "@/app/lib/redux/store";
 import { showSonnerToast } from "@/app/lib/utils";
-import { Button } from "@/components/ui/button";
+import { MotionButton } from "@/app/ui/motion-button";
 import { useSession } from "next-auth/react";
 import { useCallback } from "react";
 import { BiSolidCartAdd } from "react-icons/bi";
@@ -51,16 +51,17 @@ export function AddToCartButton({ product, quantity, outline }: IAddToCart) {
   }, [cartItems, dispatch, product, quantity, userId]);
 
   return (
-    <div>
-      <Button
-        className="rounded-lg hover:shadow-md text-sm w-full"
-        onClick={handleAddToCart}
-        size="sm"
-        variant={outline ? "outline" : "default"}
-      >
-        <BiSolidCartAdd size={24} className="block md:hidden" />
-        <span className="hidden md:block">Tambah keranjang</span>
-      </Button>
-    </div>
+    <MotionButton
+      className="rounded-lg hover:shadow-md text-sm "
+      onClick={handleAddToCart}
+      size="sm"
+      variant={outline ? "outline" : "default"}
+      whileTap={{
+        scale: 0.9,
+      }}
+    >
+      <BiSolidCartAdd size={24} className="block md:hidden" />
+      <span className="hidden md:block">Tambah keranjang</span>
+    </MotionButton>
   );
 }

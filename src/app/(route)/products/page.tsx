@@ -11,15 +11,23 @@ export const metadata: Metadata = {
 export default function Page({
   searchParams,
 }: {
-  searchParams: {
-    query: string;
+  searchParams?: {
+    page?: string;
+    query?: string;
   };
 }) {
+  const page = searchParams?.page || "1";
   const query = searchParams?.query || "";
+
   return (
     <div>
+      {query && (
+        <h3 className="font-semibold text-3xl my-4">
+          Hasil pencarian {`\'${query}\'`}
+        </h3>
+      )}
       <Suspense fallback={<ProductSkeleton />}>
-        <AllProduct query={query} />
+        <AllProduct query={query} page={page} />
       </Suspense>
     </div>
   );

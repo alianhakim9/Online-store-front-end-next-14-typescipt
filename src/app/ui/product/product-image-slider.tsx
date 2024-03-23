@@ -14,7 +14,7 @@ export function ProductImageSlider({ product }: { product: Product }) {
   return (
     <div>
       {product &&
-        (product.images.length > 1 ? (
+        (product.images && product.images.length > 1 ? (
           <div className="flex flex-col gap-2">
             <Swiper
               loop={true}
@@ -67,7 +67,11 @@ export function ProductImageSlider({ product }: { product: Product }) {
         ) : (
           <div>
             <ImageLoad
-              src={`${API_BASE_URL}${product.images[0].url}`}
+              src={
+                product.images
+                  ? `${API_BASE_URL}${product.images[0].url}`
+                  : product.imgUrl
+              }
               className="w-52 h-52 md:h-96 md:w-96"
               alt={product.name}
             />

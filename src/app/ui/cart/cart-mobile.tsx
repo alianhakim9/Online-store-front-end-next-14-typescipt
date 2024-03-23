@@ -28,7 +28,11 @@ export default function CartMobile() {
           <div>
             <ImageLoad
               alt={item.product.name}
-              src={`${API_BASE_URL}${item.product.images[0].url}`}
+              src={
+                item.product.images
+                  ? `${API_BASE_URL}${item.product.images[0].url}`
+                  : item.product.imgUrl
+              }
               className="w-20 h-20"
             />
           </div>
